@@ -7,6 +7,24 @@
     
 
     <style>
+        @media print {
+            .download-report-link {
+                display: none !important;
+            }
+
+            body {
+                margin: 0;
+            }
+
+            .invoice-box {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
         @font-face {
         font-family: 'Adobe Caslon Pro';
         src: url('http://ooisolutions.asia/fonts/ACaslonPro/ACaslonPro-Regular.woff2') format('woff2'),
@@ -479,12 +497,14 @@
 <body>
 
 <div class="invoice-box">
-    <div
-        style="background-image:url({{url('img/download-icon.png')}};float: right;background-size: 64px;width: 64px;height: 64px;padding-left: 66px;display: flex; align-items: center;background-repeat: no-repeat;">
+    @if(!request()->boolean('pdf_export'))
+    <div class="download-report-link"
+        style="background-image:url({{url('img/download-icon.png')}});float: right;background-size: 64px;width: 64px;height: 64px;padding-left: 66px;display: flex; align-items: center;background-repeat: no-repeat;">
         <a href="{{route('download.pdf', $user->id)}}" style="font-size:14px;
            line-height:20px;">
             Download Report</a>
     </div>
+    @endif
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
             <td>

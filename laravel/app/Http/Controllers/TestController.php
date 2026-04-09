@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use PDF;
+use Symfony\Component\Process\Process;
 
 class TestController extends Controller
 {
@@ -210,13 +211,21 @@ class TestController extends Controller
                 $occupations[$val] = Occupations::where("personalitytype", $val)->get();
             }
 
-            // Set PDF options for better performance and local resource handling
+            $fileName = str_replace(' ', '_', $student->firstname . '_' . $student->lastname) . '-report.pdf';
+            $pdfPath = $this->generateBrowserPdf($student->uniqueid);
+
+            if ($pdfPath !== null && file_exists($pdfPath)) {
+                \Log::info("Browser PDF generated successfully for Student ID: " . $id);
+                return response()->download($pdfPath, $fileName)->deleteFileAfterSend(true);
+            }
+
+            // Fallback to DOMPDF if Chrome-based rendering is unavailable.
             PDF::setOptions([
                 'dpi' => 150,
                 'defaultFont' => 'sans-serif',
                 'isPhpEnabled' => true,
                 'defaultPaperSize' => "a4",
-                'isRemoteEnabled' => false // Disable remote fetching to prevent deadlocks
+                'isRemoteEnabled' => false
             ]);
 
             $pdf = PDF::loadView('downloadpdf', [
@@ -225,7 +234,6 @@ class TestController extends Controller
                 'occupations' => $occupations
             ]);
 
-            $fileName = str_replace(' ', '_', $student->firstname . '_' . $student->lastname) . '-report.pdf';
             \Log::info("PDF generated successfully for Student ID: " . $id);
             return $pdf->download($fileName);
         } catch (\Exception $e) {
@@ -266,5 +274,63 @@ class TestController extends Controller
         $url = $request->fullUrl();
         $key = config('app.key');
         return hash_hmac('sha256', $url, $key);
+    }
+
+    protected function generateBrowserPdf($uid)
+    {
+        $chromePath = $this->findChromeExecutable();
+
+        if ($chromePath === null) {
+            \Log::warning('Chrome executable not found. Falling back to DOMPDF.');
+            return null;
+        }
+
+        $baseUrl = request()->getSchemeAndHttpHost();
+        $previewUrl = $baseUrl . route('test.success', ['uid' => $uid, 'pdf_export' => 1], false);
+        $outputPath = storage_path('app/' . uniqid('browser-report-', true) . '.pdf');
+
+        $process = new Process([
+            $chromePath,
+            '--headless=new',
+            '--disable-gpu',
+            '--no-sandbox',
+            '--disable-dev-shm-usage',
+            '--run-all-compositor-stages-before-draw',
+            '--virtual-time-budget=10000',
+            '--print-to-pdf=' . $outputPath,
+            '--print-to-pdf-no-header',
+            $previewUrl,
+        ]);
+
+        $process->setTimeout(60);
+        $process->run();
+
+        if (!$process->isSuccessful() || !file_exists($outputPath)) {
+            \Log::warning('Chrome PDF generation failed, falling back to DOMPDF.', [
+                'output' => $process->getOutput(),
+                'error_output' => $process->getErrorOutput(),
+            ]);
+            return null;
+        }
+
+        return $outputPath;
+    }
+
+    protected function findChromeExecutable()
+    {
+        $candidates = [
+            'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+            'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+            'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
+            'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (file_exists($candidate)) {
+                return $candidate;
+            }
+        }
+
+        return null;
     }
 }

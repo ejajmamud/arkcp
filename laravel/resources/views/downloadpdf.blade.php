@@ -496,6 +496,109 @@
             word-break: break-word;
         }
 
+        .score-section-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .score-section-table td {
+            vertical-align: middle;
+            padding: 0;
+        }
+
+        .score-label-cell {
+            width: 150px;
+            padding-right: 12px !important;
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #0b617e;
+        }
+
+        .score-bar-cell {
+            width: 100%;
+            padding-right: 12px !important;
+        }
+
+        .score-bar-bg {
+            width: 100%;
+            height: 24px;
+            background: #b6e2ea;
+        }
+
+        .score-bar-fill {
+            height: 24px;
+            background: #0b617e;
+        }
+
+        .score-value-cell {
+            width: 36px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .summary-code-table {
+            margin-top: 12px;
+            border-collapse: collapse;
+        }
+
+        .summary-code-table td {
+            padding: 0 8px 0 0;
+            text-align: center;
+            vertical-align: bottom;
+        }
+
+        .summary-score-label {
+            padding-right: 10px !important;
+            text-align: left !important;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .summary-code-box {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            background: #B6E2EA;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d71a1;
+            text-align: center;
+        }
+
+        .summary-code-score {
+            margin-top: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .score-summary-wrap {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .score-summary-wrap td {
+            vertical-align: top;
+        }
+
+        .summary-panel {
+            width: 260px;
+            padding-left: 24px !important;
+        }
+
+        .summary-panel h3,
+        .score-panel h3 {
+            margin-top: 0;
+            margin-bottom: 12px !important;
+            padding: 0 !important;
+        }
+
         .ps-info {
             display: block;
             padding-bottom: 5px;
@@ -594,41 +697,43 @@
                 </td>
             </tr>
             <tr class="information">
-                <td>
-                    <h3>RIASEC Personality Type Score</h3>
-                    <div class="">
-                        @foreach ($scores as $score)
-                            <div class="row"
-                                style="padding:0 40px 0 160px;position:relative;height:24px;margin-bottom:15px">
-                                <span class="label"
-                                    style="position:absolute;top:0;left:0;width:140px;padding-left:10px;text-align:right;font-size:16px;line-height:24px;text-transform:uppercase;font-weight:bold;z-index:10;color:#0b617e">{{$score->name}}</span>
-                                <div class="bar-wrap"
-                                    style="position:relative;background:#b6e2ea;width:100%;height:24px;overflow:hidden;top:5px">
-                                    <div class="bar {{$score->name}}" data-value="{{$score->value}}"
-                                        style="width:{{$score->value * 6.66666666667}}%;position:absolute;top:0;left:0;height:100%;background:#0b617e">
-                                    </div>
-                                </div>
-                                <span class="number"
-                                    style="position:absolute;top:0;right:0;width:30px;padding-right:10px;font-size:16px;line-height:24px;font-weight:bold;text-align:right;z-index:10;text-align:center">{{$score->value}}</span>
-                            </div>
-                        @endforeach
-                    </div>
-                </td>
-                <td id="summaryCode">
-                    <h3>Your Summary Code</h3>
-                    <div>
-                        <p style="position:relative;top:48px">Score</p>
-                    </div>
-                    <div style="margin-left:45px">
-                        @foreach ($scores as $score)
-                            @if ($loop->index < 3)
-                                <div style="display:inline-block;width:20px">
-                                    <h2 style="background-color:#B6E2EA">{{mb_substr($score->name, 0, 1)}}</h2>
-                                    <p>{{$score->value}}</p>
-                                </div>
-                            @endif
-                        @endforeach
-                    </div>
+                <td colspan="2">
+                    <table class="score-summary-wrap">
+                        <tr>
+                            <td class="score-panel">
+                                <h3>RIASEC Personality Type Score</h3>
+                                <table class="score-section-table">
+                                    @foreach ($scores as $score)
+                                        <tr>
+                                            <td class="score-label-cell">{{$score->name}}</td>
+                                            <td class="score-bar-cell">
+                                                <div class="score-bar-bg">
+                                                    <div class="score-bar-fill" style="width:{{$score->value * 6.66666666667}}%;"></div>
+                                                </div>
+                                            </td>
+                                            <td class="score-value-cell">{{$score->value}}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </td>
+                            <td class="summary-panel" id="summaryCode">
+                                <h3>Your Summary Code</h3>
+                                <table class="summary-code-table">
+                                    <tr>
+                                        <td class="summary-score-label">Score</td>
+                                        @foreach ($scores as $score)
+                                            @if ($loop->index < 3)
+                                                <td>
+                                                    <div class="summary-code-box">{{mb_substr($score->name, 0, 1)}}</div>
+                                                    <div class="summary-code-score">{{$score->value}}</div>
+                                                </td>
+                                            @endif
+                                        @endforeach
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
             <tr>
