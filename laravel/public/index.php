@@ -23,7 +23,15 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 |
 */
 
-require __DIR__ . '/../vendor/autoload.php';
+try {
+    require __DIR__ . '/../vendor/autoload.php';
+} catch (Throwable $e) {
+    http_response_code(500);
+    echo "<h1>Autoload Error</h1>";
+    echo "Message: " . $e->getMessage() . "<br>";
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+    exit;
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +45,15 @@ require __DIR__ . '/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+try {
+    $app = require_once __DIR__ . '/../bootstrap/app.php';
+} catch (Throwable $e) {
+    http_response_code(500);
+    echo "<h1>Bootstrap Error</h1>";
+    echo "Message: " . $e->getMessage() . "<br>";
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+    exit;
+}
 
 /*
 |--------------------------------------------------------------------------
