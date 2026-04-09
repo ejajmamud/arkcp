@@ -1,0 +1,4 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^charge/([0-9]+)$ /index.php?route=charge&student=$1 [L]
+</IfModule>
