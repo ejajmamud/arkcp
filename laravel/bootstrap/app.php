@@ -15,6 +15,10 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+if (!file_exists($app->environmentPath().'/.env') && file_exists($app->environmentPath().'/.env.production')) {
+    $app->loadEnvironmentFrom('.env.production');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces

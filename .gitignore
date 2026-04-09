@@ -13,7 +13,6 @@ Thumbs.db
 /*.zip
 /*.sql
 
-/laravel/vendor/
 /laravel/vendor_old/
 /laravel/vendor.zip
 /laravel/node_modules/

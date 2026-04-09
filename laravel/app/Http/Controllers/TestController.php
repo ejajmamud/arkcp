@@ -318,11 +318,22 @@ class TestController extends Controller
 
     protected function findChromeExecutable()
     {
+        $configuredBinary = env('BROWSER_PDF_BIN');
+        if (!empty($configuredBinary) && file_exists($configuredBinary)) {
+            return $configuredBinary;
+        }
+
         $candidates = [
             'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
             'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
             'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
             'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
+            '/usr/bin/google-chrome',
+            '/usr/bin/google-chrome-stable',
+            '/usr/bin/chromium-browser',
+            '/usr/bin/chromium',
+            '/usr/bin/microsoft-edge',
+            '/usr/bin/microsoft-edge-stable',
         ];
 
         foreach ($candidates as $candidate) {
