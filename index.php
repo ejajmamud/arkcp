@@ -1,22 +1,19 @@
 <?php
-// Define absolute path to vendor
-$vendorPath = __DIR__.'/../laravel/vendor/autoload.php';
-
-if (!file_exists($vendorPath)) {
-    die("Error: Missing vendor files at $vendorPath");
-}
-
-// Load Student model directly if needed
-if (!class_exists('App\Models\Student')) {
-    require __DIR__.'/../laravel/app/Models/Student.php';
-    class_alias('App\Models\Student', 'App\Student');
-}
 
 define('LARAVEL_START', microtime(true));
 
+$laravelBasePath = __DIR__ . '/laravel';
+$vendorPath = $laravelBasePath . '/vendor/autoload.php';
+$bootstrapPath = $laravelBasePath . '/bootstrap/app.php';
+
+if (!file_exists($vendorPath)) {
+    http_response_code(500);
+    die("Error: Missing vendor files at {$vendorPath}");
+}
+
 require $vendorPath;
 
-$app = require_once __DIR__.'/../laravel/bootstrap/app.php';
+$app = require_once $bootstrapPath;
 
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
