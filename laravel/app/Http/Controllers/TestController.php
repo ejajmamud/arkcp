@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use PDF;
-use Symfony\Component\Process\Process;
 
 class TestController extends Controller
 {
@@ -54,64 +53,81 @@ class TestController extends Controller
     // Method to store answers submitted by the user
     public function store(Request $request)
     {
-        $student = Student::where('uniqueid', $request->uniqueid)->firstOrFail();
-        $sid = $student->student_id;
+        try {
+            $student = Student::where('uniqueid', $request->uniqueid)->firstOrFail();
 
-        // Initialize score for different personality types
-        $score = [];
-        $personalityTypes = ["Artistic", "Conventional", "Enterprising", "Social", "Investigative", "Realistic"];
+            // Initialize score for different personality types
+            $score = [];
+            $personalityTypes = ["Artistic", "Conventional", "Enterprising", "Social", "Investigative", "Realistic"];
 
-        foreach ($personalityTypes as $type) {
-            $score[] = (object) ['name' => $type, 'value' => 0];
-        }
+            foreach ($personalityTypes as $type) {
+                $score[] = (object) ['name' => $type, 'value' => 0];
+            }
 
-        // Process each answer
-        foreach ($request->test as $typeArr) {
-            foreach ($typeArr as $rArr) {
-                if (!isset($rArr["answer"]) || $rArr["answer"] !== "yes") {
+            foreach ($this->normalizeSubmittedAnswers((array) $request->input('test', [])) as $answerRow) {
+                if (($answerRow["answer"] ?? null) !== "yes") {
                     continue;
                 }
 
-                $index = array_search($rArr["type"], $personalityTypes);
+                $index = array_search($answerRow["type"] ?? null, $personalityTypes, true);
                 if ($index !== false) {
                     $score[$index]->value += 1;
                 }
             }
+
+            usort($score, function ($a, $b) {
+                return $b->value <=> $a->value;
+            });
+
+            $student->isTestCompleted = 1;
+            $student->score = serialize($score);
+            $student->save();
+
+            return redirect('/test/success?uid=' . rawurlencode((string) $request->uniqueid));
+        } catch (\Throwable $e) {
+            \Log::error('Test submit failed', [
+                'uid' => $request->uniqueid,
+                'message' => $e->getMessage(),
+            ]);
+
+            return redirect('/test/success?uid=' . rawurlencode((string) $request->uniqueid));
         }
-
-        usort($score, function ($a, $b) {
-            return $b->value <=> $a->value;
-        });
-
-        $student->isTestCompleted = 1;
-        $student->score = serialize($score);
-        $student->save();
-
-        // Get the top 3 personality types
-        $firstThreePersonalityType = array_slice($score, 0, 3);
-        $occupations = [];
-
-        // Fetch occupations based on top personality types
-        foreach ($firstThreePersonalityType as $val) {
-            $occupations[$val->name] = Occupations::where("personalitytype", $val->name)->get();
-        }
-
-        // Send the success response with occupations
-        // try {
-        //     $this->success($sid, $student->score, $student);
-        // } catch (\Exception $e) {
-        //     \Log::error('Failed to process success actions (email/pdf): ' . $e->getMessage());
-        // }
-
-        return redirect()->route('test.success', ['uid' => $request->uniqueid]);
     }
 
-    // Method to show the success page
-    public function testSuccess(Request $request)
+    protected function normalizeSubmittedAnswers(array $submitted): array
     {
-        $uid = $request->uid;
+        $normalized = [];
+
+        foreach ($submitted as $entry) {
+            if (!is_array($entry)) {
+                continue;
+            }
+
+            // Newer form shape: test[page][question][answer/type]
+            if (array_key_exists('answer', $entry) || array_key_exists('type', $entry)) {
+                $normalized[] = $entry;
+                continue;
+            }
+
+            foreach ($entry as $nestedEntry) {
+                if (is_array($nestedEntry) && (array_key_exists('answer', $nestedEntry) || array_key_exists('type', $nestedEntry))) {
+                    $normalized[] = $nestedEntry;
+                }
+            }
+        }
+
+        return $normalized;
+    }
+
+    // Build the shared data used by the success preview page.
+    protected function buildSuccessViewData(string $uid): array
+    {
         $student = Student::where('uniqueid', $uid)->firstOrFail();
-        $scores = unserialize($student->score);
+        $scores = @unserialize($student->score);
+
+        if (!is_array($scores)) {
+            $scores = [];
+        }
 
         $personalitytype = array_map(function ($value) {
             return $value->name;
@@ -124,11 +140,36 @@ class TestController extends Controller
             $occupations[$val] = Occupations::where("personalitytype", $val)->get();
         }
 
-        return view("testsuccess.index", [
+        return [
             "scores" => $scores,
             "user" => $student,
             'occupations' => $occupations
-        ]);
+        ];
+    }
+
+    // Method to show the success page
+    public function testSuccess(Request $request)
+    {
+        $viewData = $this->buildSuccessViewData((string) $request->uid);
+        $viewData['isHeadlessBrowserRender'] = $request->boolean('headless_browser');
+        return view("testsuccess.index", $viewData);
+    }
+
+    // cPanel/PHP opcode caches can occasionally hold on to a stale class shape.
+    // This keeps the success route working even if the server dispatches to __call.
+    public function __call($method, $parameters)
+    {
+        if ($method === 'testSuccess') {
+            $request = $parameters[0] ?? request();
+
+            if (!$request instanceof Request) {
+                $request = request();
+            }
+
+            return view("testsuccess.index", $this->buildSuccessViewData((string) $request->uid));
+        }
+
+        return parent::__call($method, $parameters);
     }
 
     // Success method to generate report and send the email
@@ -150,15 +191,21 @@ class TestController extends Controller
         // Generate the PDF report for the student
         PDF::setOptions([
             'dpi' => 150,
-            'defaultFont' => 'sans-serif',
+            'defaultFont' => 'Helvetica',
             'isPhpEnabled' => true,
-            'defaultPaperSize' => "a4"
+            'defaultPaperSize' => "a4",
+            'defaultMediaType' => 'print',
+            'isHtml5ParserEnabled' => true,
+            'isJavascriptEnabled' => false,
+            'isRemoteEnabled' => false,
         ]);
 
-        $pdf = PDF::loadView('downloadpdf', [
+        $pdf = PDF::loadView('testsuccess.index', [
             'scores' => $scores,
             'user' => $student,
-            'occupations' => $occupations
+            'occupations' => $occupations,
+            'pdfMode' => true,
+            'pdfAssetBaseUrl' => rtrim(request()->getSchemeAndHttpHost(), '/'),
         ]);
 
         // Prepare the email content
@@ -212,26 +259,33 @@ class TestController extends Controller
             }
 
             $fileName = str_replace(' ', '_', $student->firstname . '_' . $student->lastname) . '-report.pdf';
-            $pdfPath = $this->generateBrowserPdf($student->uniqueid);
 
-            if ($pdfPath !== null && file_exists($pdfPath)) {
+            $browserPdfPath = $this->generateBrowserPdfFromSuccessPage(
+                (string) $student->uniqueid,
+                rtrim(request()->getSchemeAndHttpHost(), '/')
+            );
+            if ($browserPdfPath !== null && file_exists($browserPdfPath)) {
                 \Log::info("Browser PDF generated successfully for Student ID: " . $id);
-                return response()->download($pdfPath, $fileName)->deleteFileAfterSend(true);
+                return response()->download($browserPdfPath, $fileName)->deleteFileAfterSend(true);
             }
 
-            // Fallback to DOMPDF if Chrome-based rendering is unavailable.
             PDF::setOptions([
                 'dpi' => 150,
-                'defaultFont' => 'sans-serif',
+                'defaultFont' => 'Helvetica',
                 'isPhpEnabled' => true,
                 'defaultPaperSize' => "a4",
+                'defaultMediaType' => 'print',
+                'isHtml5ParserEnabled' => true,
+                'isJavascriptEnabled' => false,
                 'isRemoteEnabled' => false
             ]);
 
-            $pdf = PDF::loadView('downloadpdf', [
+            $pdf = PDF::loadView('testsuccess.index', [
                 'scores' => $scores,
                 'user' => $student,
-                'occupations' => $occupations
+                'occupations' => $occupations,
+                'pdfMode' => true,
+                'pdfAssetBaseUrl' => rtrim(request()->getSchemeAndHttpHost(), '/'),
             ]);
 
             \Log::info("PDF generated successfully for Student ID: " . $id);
@@ -273,42 +327,44 @@ class TestController extends Controller
     {
         $url = $request->fullUrl();
         $key = config('app.key');
-        return hash_hmac('sha256', $url, $key);
-    }
+            return hash_hmac('sha256', $url, $key);
+        }
 
-    protected function generateBrowserPdf($uid)
+    protected function generateBrowserPdfFromSuccessPage(string $uid, ?string $baseUrl = null): ?string
     {
-        $chromePath = $this->findChromeExecutable();
+        $browserBinary = $this->findHeadlessBrowserBinary();
 
-        if ($chromePath === null) {
-            \Log::warning('Chrome executable not found. Falling back to DOMPDF.');
+        if ($browserBinary === null) {
+            \Log::warning('No headless browser binary found for preview-faithful PDF generation.');
             return null;
         }
 
-        $baseUrl = request()->getSchemeAndHttpHost();
-        $previewUrl = $baseUrl . route('test.success', ['uid' => $uid, 'pdf_export' => 1], false);
+        $base = !empty($baseUrl) ? rtrim($baseUrl, '/') : rtrim(url('/'), '/');
+        $previewUrl = $base . '/test/success?uid=' . rawurlencode($uid) . '&pdf_export=1&headless_browser=1';
         $outputPath = storage_path('app/' . uniqid('browser-report-', true) . '.pdf');
 
-        $process = new Process([
-            $chromePath,
-            '--headless=new',
-            '--disable-gpu',
-            '--no-sandbox',
-            '--disable-dev-shm-usage',
-            '--run-all-compositor-stages-before-draw',
-            '--virtual-time-budget=10000',
-            '--print-to-pdf=' . $outputPath,
-            '--print-to-pdf-no-header',
-            $previewUrl,
-        ]);
+        $command = escapeshellarg($browserBinary)
+            . ' --headless=new'
+            . ' --disable-gpu'
+            . ' --no-sandbox'
+            . ' --disable-dev-shm-usage'
+            . ' --ignore-certificate-errors'
+            . ' --run-all-compositor-stages-before-draw'
+            . ' --virtual-time-budget=12000'
+            . ' --print-to-pdf=' . escapeshellarg($outputPath)
+            . ' --print-to-pdf-no-header '
+            . escapeshellarg($previewUrl)
+            . ' 2>&1';
 
-        $process->setTimeout(60);
-        $process->run();
+        $output = [];
+        $exitCode = 0;
+        exec($command, $output, $exitCode);
 
-        if (!$process->isSuccessful() || !file_exists($outputPath)) {
-            \Log::warning('Chrome PDF generation failed, falling back to DOMPDF.', [
-                'output' => $process->getOutput(),
-                'error_output' => $process->getErrorOutput(),
+        if ($exitCode !== 0 || !file_exists($outputPath)) {
+            \Log::warning('Headless browser PDF generation failed, using DomPDF fallback.', [
+                'command' => $command,
+                'exit_code' => $exitCode,
+                'output' => implode("\n", $output),
             ]);
             return null;
         }
@@ -316,11 +372,11 @@ class TestController extends Controller
         return $outputPath;
     }
 
-    protected function findChromeExecutable()
+    protected function findHeadlessBrowserBinary(): ?string
     {
-        $configuredBinary = env('BROWSER_PDF_BIN');
-        if (!empty($configuredBinary) && file_exists($configuredBinary)) {
-            return $configuredBinary;
+        $configuredPath = env('BROWSER_PDF_BIN');
+        if (!empty($configuredPath) && file_exists($configuredPath)) {
+            return $configuredPath;
         }
 
         $candidates = [

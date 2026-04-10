@@ -4,16 +4,63 @@
     <meta charset="utf-8">
     <title>Summary Report</title>
 
-    
+    @php($isPdfMode = !empty($pdfMode) || request()->boolean('pdf_export'))
+    @php($isHeadlessBrowser = !empty($isHeadlessBrowserRender))
+    @php($assetBase = rtrim(request()->root(), '/'))
+    @php($assetUrl = function ($path) use ($assetBase) {
+        return $assetBase . '/' . ltrim($path, '/');
+    })
+    @php($toDataUri = function ($path) {
+        if (!is_file($path) || !is_readable($path)) {
+            return null;
+        }
+
+        $extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        $mimeMap = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'webp' => 'image/webp',
+            'svg' => 'image/svg+xml',
+        ];
+
+        $mime = $mimeMap[$extension] ?? 'application/octet-stream';
+        $binary = @file_get_contents($path);
+
+        if ($binary === false) {
+            return null;
+        }
+
+        return 'data:' . $mime . ';base64,' . base64_encode($binary);
+    })
+    @php($toPdfFileSrc = function ($path) {
+        $normalized = str_replace('\\', '/', $path);
+        return preg_match('/^[A-Za-z]:\\//', $normalized)
+            ? 'file:///' . ltrim($normalized, '/')
+            : 'file://' . $normalized;
+    })
+    @php($logoDataUri = $toDataUri(public_path('img/career-preference-logo.jpg')))
+    @php($hexDataUri = $toDataUri(public_path('img/riasec_hexagon_holland.jpg')))
+    @php($logoSrc = $isHeadlessBrowser ? ($logoDataUri ?: $assetUrl('img/career-preference-logo.jpg')) : ($isPdfMode ? $toPdfFileSrc(public_path('img/career-preference-logo.jpg')) : $assetUrl('img/career-preference-logo.jpg')))
+    @php($hexSrc = $isHeadlessBrowser ? ($hexDataUri ?: $assetUrl('img/riasec_hexagon_holland.jpg')) : ($isPdfMode ? $toPdfFileSrc(public_path('img/riasec_hexagon_holland.jpg')) : $assetUrl('img/riasec_hexagon_holland.jpg')))
 
     <style>
+        @page {
+            margin: 0 8mm;
+            size: A4;
+        }
+
         @media print {
             .download-report-link {
                 display: none !important;
             }
 
             body {
-                margin: 0;
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
 
             .invoice-box {
@@ -73,6 +120,11 @@
             line-height: 26px;
             font-family: Calibri;
             color: #3a3a3a;
+        }
+
+        .invoice-box .row {
+            margin-left: 0;
+            margin-right: 0;
         }
 
         .invoice-box table {
@@ -152,11 +204,13 @@
 
         .hex-img {
             text-align: center;
+            padding: 15px 0 5px;
         }
 
         .hex-img img {
-            width: 600px;
-            padding: 15px 0;
+            width: 100%;
+            max-width: 420px;
+            height: auto;
         }
 
         /* chart sytles */
@@ -330,7 +384,7 @@
         .rtl {
             direction: rtl;
             font-family: Calibri;
-            
+
         }
 
         .rtl table {
@@ -475,7 +529,7 @@
             width: 47%;
             float: left;
             margin-right: 3%;
-            
+
         }
 
         ul.occu-list {
@@ -491,18 +545,36 @@
             margin: 0px 0px 10px;
         }
         .capitalize {text-transform: capitalize !important;}
+
+        .download-report-link {
+            background-image: url({{ $assetUrl('img/download-icon.png') }});
+            float: right;
+            background-size: 64px;
+            width: 64px;
+            height: 64px;
+            padding-left: 66px;
+            display: flex;
+            align-items: center;
+            background-repeat: no-repeat;
+        }
+
+        .download-report-link a {
+            font-size: 14px;
+            line-height: 20px;
+            color: #2d71a1;
+            text-align: left;
+        }
     </style>
 </head>
 
 <body>
 
 <div class="invoice-box">
-    @if(!request()->boolean('pdf_export'))
-    <div class="download-report-link"
-        style="background-image:url({{url('img/download-icon.png')}});float: right;background-size: 64px;width: 64px;height: 64px;padding-left: 66px;display: flex; align-items: center;background-repeat: no-repeat;">
-        <a href="{{route('download.pdf', $user->id)}}" style="font-size:14px;
-           line-height:20px;">
-            Download Report</a>
+    @if(!$isPdfMode)
+    <div class="download-report-link">
+        <a href="{{ route('download.pdf', $user->id) }}">
+            Download Report
+        </a>
     </div>
     @endif
     <table cellpadding="0" cellspacing="0">
@@ -511,7 +583,7 @@
                 <table>
                     <tr>
                         <td>
-                            <img src="{{url('img/career-preference-logo.jpg')}}"
+                            <img src="{{ $logoSrc }}"
                                  style="max-width: 250px;">
                             <h4 style="margin: 7px 0px;font-size: 18px;">www.ark.com.my</h4>
                         </td>
@@ -520,7 +592,7 @@
                 </table>
             </td>
             <td>
-                
+
             </td>
         </tr>
 
@@ -650,7 +722,7 @@
             <td colspan="2">
                 <h3>The Personality Types</h3>
                 <div class="hex-img">
-                    <img src="https://ooisolutions.asia/img/report_hex.png" alt="" style="max-width: 40%;">
+                    <img src="{{ $hexSrc }}" alt="RIASEC hexagon">
                 </div>
                 <div class="ps-info">
                         <h4>REALISTIC</h4>
@@ -664,7 +736,7 @@
                 <div class="ps-info">
                         <h4>INVESTIGATIVE </h4>
                         <p>
-                            Investigative people like to observe, learn, investigate, analyze, and solve problems 
+                            Investigative people like to observe, learn, investigate, analyze, and solve problems
                         </p>
                          <p> <span class="theme-color">Characteristics:</span> Logical, Curious, Thoughtful, Observant, and Intellectual
                           <br> <span class="theme-color">Working Environment:</span> Academic Education, IT, Healthcare and Innovative Companies
@@ -708,7 +780,7 @@
                         </p>
 
                     </div>
-                
+
             </td>
         </tr>
         <tr>
@@ -803,11 +875,12 @@
                             @ Copyright Ark Publications. All Rights Reserved.
                             </p>
                 </div>
-                
+
             </td>
         </tr>
-        
+
     </table>
 </div>
+
 </body>
 </html>

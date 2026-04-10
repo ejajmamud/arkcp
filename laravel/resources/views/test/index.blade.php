@@ -86,68 +86,59 @@
 <style>
     /* Styling overrides to ensure visibility */
     .multisteps-form__progress {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0;
+        width: 100%;
+        margin: 0 auto;
+        padding-top: 20px;
+    }
+    .multisteps-form__progress::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 16px;
+        right: 16px;
+        height: 2px;
+        background-color: #d9e2ec;
+        z-index: 1;
     }
     .multisteps-form__progress-btn {
-        transition-property: all;
-        transition-duration: 0.15s;
-        transition-timing-function: linear;
-        transition-delay: 0s;
         position: relative;
-        padding-top: 20px;
-        color: rgba(108, 117, 125, 0.7);
+        flex: 1 1 0;
+        min-width: 0;
+        height: 24px;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        background: transparent;
+        color: transparent;
         text-indent: -9999px;
-        border: none;
-        background-color: transparent;
+        overflow: hidden;
         outline: none !important;
         cursor: pointer;
+        z-index: 2;
     }
-    .multisteps-form__progress-btn:before {
+    .multisteps-form__progress-btn::before {
+        content: '';
         position: absolute;
         top: 0;
         left: 50%;
-        display: block;
         width: 20px;
         height: 20px;
-        content: '';
-        -webkit-transform: translateX(-50%);
-        transform: translateX(-50%);
-        transition: all 0.15s linear 0s, -webkit-transform 0.15s linear 0s;
-        border: 2px solid #007bff;
+        border: 2px solid #9aa5b1;
         border-radius: 50%;
         background-color: #fff;
+        transform: translateX(-50%);
         box-sizing: border-box;
-        z-index: 3;
+        transition: transform 0.15s linear, background-color 0.15s linear, border-color 0.15s linear;
     }
-    .multisteps-form__progress-btn:after {
-        position: absolute;
-        top: 10px; /* Aligned with 20px dot */
-        left: calc(-50% - 20px / 2);
-        transition-property: all;
-        transition-duration: 0.15s;
-        transition-timing-function: linear;
-        transition-delay: 0s;
-        display: block;
-        width: 100%;
-        height: 2px;
-        content: '';
-        background-color: #dee2e6;
-        z-index: 1;
-    }
-    .multisteps-form__progress-btn.js-active:after {
+    .multisteps-form__progress-btn.js-active::before {
+        border-color: #007bff;
         background-color: #007bff;
-    }
-    .multisteps-form__progress-btn:first-child:after {
-        display: none;
-    }
-    .multisteps-form__progress-btn.js-active {
-        color: #007bff;
-    }
-    .multisteps-form__progress-btn.js-active:before {
-        -webkit-transform: translateX(-50%) scale(1.2);
-        transform: translateX(-50%) scale(1.2);
-        background-color: currentColor;
+        transform: translateX(-50%) scale(1.15);
     }
     .multisteps-form__form {
         position: relative;

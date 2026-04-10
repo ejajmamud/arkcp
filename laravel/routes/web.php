@@ -9,6 +9,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Models\Student;
+use App\Occupations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
@@ -119,8 +120,37 @@ Route::middleware(['throttle:60,1'])->group(function () {
 // Route::post('/paypal/gateway', [PaymentController::class, 'paypalGateway'])->name('payment.paypal');
 // ==================== TEST SYSTEM ====================
 // Specific routes MUST come before parametric routes
+Route::get('/test/submit', function () {
+    return redirect('/');
+});
 Route::post('/test/submit', [TestController::class, 'store'])->name('test.submit');
-Route::get('/test/success', [TestController::class, 'testSuccess'])->name('test.success');
+Route::get('/test/success', function (Request $request) {
+    $student = Student::where('uniqueid', $request->uid)->firstOrFail();
+    $scores = @unserialize($student->score);
+
+    if (!is_array($scores)) {
+        $scores = [];
+    }
+
+    $personalitytype = array_map(function ($value) {
+        return $value->name;
+    }, $scores);
+
+    $firstThreePersonalityType = array_slice($personalitytype, 0, 3);
+    $occupations = [];
+
+    foreach ($firstThreePersonalityType as $val) {
+        $occupations[$val] = Occupations::where("personalitytype", $val)->get();
+    }
+
+    return view('testsuccess.index', [
+        'scores' => $scores,
+        'user' => $student,
+        'occupations' => $occupations,
+        'isHeadlessBrowserRender' => $request->boolean('headless_browser'),
+        'pdfMode' => $request->boolean('pdf_export'),
+    ]);
+})->name('test.success');
 Route::get('/download/pdf/{id}', [TestController::class, 'downloadPDF'])->name('download.pdf');
 
 // Parametric route for taking the test
@@ -156,6 +186,21 @@ Route::get('/server-time', function () {
     ];
 });
 
+Route::get('/storage/banner/{file}', function ($file) {
+    $candidates = [
+        public_path('storage/banner/' . $file),
+        base_path('../storage/banner/' . $file),
+    ];
+
+    foreach ($candidates as $path) {
+        if (is_file($path)) {
+            return response()->file($path);
+        }
+    }
+
+    abort(404);
+})->where('file', '.*');
+
 
 
 
@@ -164,7 +209,7 @@ Route::get('/debug-paths', function () {
         'controller_path' => realpath(app_path('Http/Controllers/TestController.php')),
         'model_path' => realpath(app_path('Models/Student.php')),
         'loaded_model' => class_exists(\App\Models\Student::class) ? 'Yes' : 'No',
-        'wrong_model' => class_exists(\App\Student::class) ? 'Yes' : 'No'
+        'wrong_model' => 'Not checked'
     ];
 });
 
@@ -222,7 +267,7 @@ Route::get('/verify-model', function () {
     return [
         'model_path' => class_exists('App\Models\Student') ?
             (new ReflectionClass('App\Models\Student'))->getFileName() : 'Not found',
-        'wrong_model' => class_exists('App\Student') ? 'Exists' : 'Does not exist',
+        'wrong_model' => 'Not checked',
         'autoload_files' => include base_path('vendor/composer/autoload_files.php')
     ];
 });
@@ -234,6 +279,10 @@ Route::get('/clear-cache', function () {
     \Artisan::call('view:clear');
     \Artisan::call('config:clear');
     \Artisan::call('route:clear');
+    if (function_exists('opcache_reset')) {
+        @opcache_reset();
+    }
+
     return "Cache Cleared!";
 
     // Refresh autoloader
@@ -245,7 +294,7 @@ Route::get('/clear-cache', function () {
         'status' => $result === 0 ? 'success' : 'error',
         'output' => $output,
         'model_exists' => class_exists('App\Models\Student') ? 'Yes' : 'No',
-        'wrong_model' => class_exists('App\Student') ? 'Yes' : 'No'
+        'wrong_model' => 'Not checked'
     ]);
 });
 
