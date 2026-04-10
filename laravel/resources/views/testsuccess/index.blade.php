@@ -56,6 +56,13 @@
                 display: none !important;
             }
 
+            html,
+            body {
+                width: 210mm !important;
+                max-width: 210mm !important;
+                overflow: visible !important;
+            }
+
             body {
                 margin: 0 !important;
                 padding: 0 !important;
@@ -66,9 +73,40 @@
             .invoice-box {
                 box-shadow: none !important;
                 border: none !important;
-                max-width: none !important;
-                margin: 0 !important;
+                width: 194mm !important;
+                max-width: 194mm !important;
+                margin: 0 auto !important;
                 padding: 0 !important;
+                box-sizing: border-box !important;
+                overflow: visible !important;
+            }
+
+            .invoice-box table,
+            .invoice-box tr,
+            .invoice-box td,
+            .invoice-box h2,
+            .invoice-box h3,
+            .invoice-box h4,
+            .invoice-box p,
+            .invoice-box li {
+                max-width: 100% !important;
+                overflow-wrap: anywhere !important;
+                word-break: normal !important;
+            }
+
+            ul.occu-list {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                margin: 0 !important;
+                padding-left: 24px !important;
+            }
+
+            ul.occu-list li {
+                float: none !important;
+                width: 50% !important;
+                margin-right: 0 !important;
+                padding-right: 8mm !important;
+                box-sizing: border-box !important;
             }
         }
 
