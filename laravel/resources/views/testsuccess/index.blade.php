@@ -47,14 +47,22 @@
 
     <style>
         @page {
-            margin: 6mm 6mm;
             size: A4;
+            margin: 10mm 10mm 10mm 10mm;
         }
 
         * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
+            box-sizing: border-box !important;
+        }
+
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
         }
 
         @media print {
@@ -78,25 +86,32 @@
             .invoice-box {
                 box-shadow: none !important;
                 border: none !important;
-                max-width: 100% !important;
                 margin: 0 !important;
-                padding: 8mm !important;
+                padding: 0 !important;
                 width: 100% !important;
+                max-width: 100% !important;
                 box-sizing: border-box !important;
                 font-size: 14px !important;
+                overflow: visible !important;
             }
 
-            .invoice-box table,
-            .invoice-box table td,
-            .invoice-box table tr {
+            .invoice-box table {
                 width: 100% !important;
-                border: none !important;
+                border-collapse: collapse !important;
+                table-layout: auto !important;
             }
 
-            .invoice-box table td {
+            .invoice-box table td,
+            .invoice-box table th {
+                box-sizing: border-box !important;
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
-                padding: 4px 2px !important;
+                padding: 4px 3px !important;
+                overflow: visible !important;
+            }
+
+            .invoice-box table tr {
+                page-break-inside: avoid !important;
             }
 
             .invoice-box h1,
@@ -105,28 +120,34 @@
             .invoice-box h4,
             .invoice-box h5 {
                 page-break-after: avoid !important;
-                margin: 8px 0 4px 0 !important;
+                margin: 6px 0 3px 0 !important;
+                padding: 0 !important;
             }
 
             .invoice-box h4 {
-                font-size: 14px !important;
+                font-size: 13px !important;
+                font-weight: bold !important;
             }
 
             .invoice-box p {
-                margin: 4px 0 !important;
-                line-height: 1.4 !important;
+                margin: 3px 0 !important;
+                line-height: 1.35 !important;
                 font-size: 13px !important;
+                padding: 0 !important;
             }
 
             .hex-img {
                 text-align: center !important;
-                page-break-after: avoid !important;
+                page-break-inside: avoid !important;
+                margin: 5px 0 !important;
+                padding: 0 !important;
             }
 
             .hex-img img {
                 max-width: 100% !important;
                 width: auto !important;
                 height: auto !important;
+                max-height: 150px !important;
             }
 
             .invoice-box img {
@@ -137,12 +158,13 @@
 
             .ps-info {
                 page-break-inside: avoid !important;
-                margin: 4px 0 !important;
+                margin: 3px 0 !important;
+                padding: 0 !important;
             }
 
             ul.occu-list {
                 margin: 0 !important;
-                padding: 0 0 0 18px !important;
+                padding: 0 0 0 16px !important;
                 display: block !important;
                 width: 100% !important;
                 list-style: none !important;
@@ -151,33 +173,28 @@
             ul.occu-list li {
                 float: left !important;
                 width: 45% !important;
-                margin: 0 2% 2px 0 !important;
-                padding: 2px 4px !important;
+                margin: 0 3% 1px 0 !important;
+                padding: 1px 2px !important;
                 font-size: 12px !important;
                 page-break-inside: avoid !important;
                 list-style-position: inside !important;
                 list-style-type: circle !important;
                 box-sizing: border-box !important;
                 line-height: 1.3 !important;
+                overflow: visible !important;
             }
 
             .ps-info h4,
             div h4 {
                 page-break-after: avoid !important;
-                margin-bottom: 2px !important;
+                margin-bottom: 1px !important;
+                padding: 0 !important;
             }
 
-            /* Clearfix for floated occupation list */
-            ul.occu-list::after {
-                content: "" !important;
-                display: table !important;
-                clear: both !important;
-            }
-
-            /* User details styling */
             .user-details-rw {
                 background: #0B617E !important;
                 color: white !important;
+                page-break-inside: avoid !important;
             }
 
             .user-details-rw td {
@@ -201,10 +218,24 @@
                 background: #0B617E !important;
             }
 
-            /* Prevent page breaks in critical sections */
             tr.top,
             tr.information {
                 page-break-inside: avoid !important;
+            }
+
+            table.user-details {
+                width: 100% !important;
+            }
+
+            .information {
+                page-break-inside: avoid !important;
+            }
+
+            /* Remove any fixed widths that cause overflow */
+            .invoice-box .row {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
             }
         }
 
@@ -256,6 +287,19 @@
             line-height: 26px;
             font-family: Calibri;
             color: #3a3a3a;
+            box-sizing: border-box;
+        }
+
+        @media print {
+            .invoice-box {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
         }
 
         .invoice-box .row {
