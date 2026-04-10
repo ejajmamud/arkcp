@@ -94,19 +94,30 @@
                 word-break: normal !important;
             }
 
+            .invoice-box table {
+                width: 100% !important;
+                table-layout: fixed !important;
+            }
+
+            .invoice-box h4 {
+                display: block !important;
+            }
+
             ul.occu-list {
-                display: flex !important;
-                flex-wrap: wrap !important;
+                display: block !important;
+                column-count: 2 !important;
+                column-gap: 10mm !important;
                 margin: 0 !important;
                 padding-left: 24px !important;
             }
 
             ul.occu-list li {
                 float: none !important;
-                width: 50% !important;
+                width: auto !important;
                 margin-right: 0 !important;
-                padding-right: 8mm !important;
+                padding-right: 0 !important;
                 box-sizing: border-box !important;
+                break-inside: avoid-column !important;
             }
         }
 
