@@ -55,28 +55,19 @@
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             color-adjust: exact !important;
+            box-sizing: border-box !important;
         }
 
         html, body {
-            margin: 0;
-            padding: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
         }
 
         @media print {
             .download-report-link {
                 display: none !important;
-            }
-
-            .invoice-box {
-                box-shadow: none !important;
-                border: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100% !important;
-                max-width: 100% !important;
-                box-sizing: border-box !important;
-                font-size: 14px !important;
-                overflow: visible !important;
             }
 
             html,
@@ -90,6 +81,18 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
                 background: white !important;
+            }
+
+            .invoice-box {
+                box-shadow: none !important;
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                font-size: 14px !important;
+                overflow: visible !important;
             }
 
             .invoice-box table {
@@ -284,6 +287,19 @@
             line-height: 26px;
             font-family: Calibri;
             color: #3a3a3a;
+            box-sizing: border-box;
+        }
+
+        @media print {
+            .invoice-box {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                border: none !important;
+                box-shadow: none !important;
+            }
         }
 
         .invoice-box .row {
