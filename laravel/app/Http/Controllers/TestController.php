@@ -271,7 +271,12 @@ class TestController extends Controller
                 'defaultMediaType' => 'print',
                 'isHtml5ParserEnabled' => true,
                 'isJavascriptEnabled' => false,
-                'isRemoteEnabled' => false
+                'isRemoteEnabled' => true,
+                'chroot' => env('DOCUMENT_ROOT', base_path('/public')),
+                'logOutputFile' => storage_path('logs/dompdf.log'),
+                'tempDir' => storage_path('temp'),
+                'fontDir' => storage_path('fonts'),
+                'fontCache' => storage_path('fonts'),
             ]);
 
             $pdf = PDF::loadView('testsuccess.index', [
@@ -279,6 +284,7 @@ class TestController extends Controller
                 'user' => $student,
                 'occupations' => $occupations,
                 'pdfMode' => true,
+                'isHeadlessBrowserRender' => false,
                 'pdfAssetBaseUrl' => rtrim(request()->getSchemeAndHttpHost(), '/'),
             ]);
 

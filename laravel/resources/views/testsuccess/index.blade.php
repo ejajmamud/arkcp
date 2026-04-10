@@ -42,13 +42,19 @@
     })
     @php($logoDataUri = $toDataUri(public_path('img/career-preference-logo.jpg')))
     @php($hexDataUri = $toDataUri(public_path('img/riasec_hexagon_holland.jpg')))
-    @php($logoSrc = $isHeadlessBrowser ? ($logoDataUri ?: $assetUrl('img/career-preference-logo.jpg')) : ($isPdfMode ? $toPdfFileSrc(public_path('img/career-preference-logo.jpg')) : $assetUrl('img/career-preference-logo.jpg')))
-    @php($hexSrc = $isHeadlessBrowser ? ($hexDataUri ?: $assetUrl('img/riasec_hexagon_holland.jpg')) : ($isPdfMode ? $toPdfFileSrc(public_path('img/riasec_hexagon_holland.jpg')) : $assetUrl('img/riasec_hexagon_holland.jpg')))
+    @php($logoSrc = ($logoDataUri ?: ($isPdfMode ? $toPdfFileSrc(public_path('img/career-preference-logo.jpg')) : $assetUrl('img/career-preference-logo.jpg'))))
+    @php($hexSrc = ($hexDataUri ?: ($isPdfMode ? $toPdfFileSrc(public_path('img/riasec_hexagon_holland.jpg')) : $assetUrl('img/riasec_hexagon_holland.jpg'))))
 
     <style>
         @page {
-            margin: 0 8mm;
+            margin: 6mm 6mm;
             size: A4;
+        }
+
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
         }
 
         @media print {
@@ -56,53 +62,149 @@
                 display: none !important;
             }
 
+            html,
             body {
                 margin: 0 !important;
                 padding: 0 !important;
+                width: 100% !important;
+            }
+
+            body {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+                background: white !important;
             }
 
             .invoice-box {
                 box-shadow: none !important;
                 border: none !important;
-                max-width: 190mm !important;
-                margin: 0 auto !important;
-                padding: 0 !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 8mm !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                font-size: 14px !important;
             }
 
-            .invoice-box table {
+            .invoice-box table,
+            .invoice-box table td,
+            .invoice-box table tr {
                 width: 100% !important;
+                border: none !important;
             }
 
             .invoice-box table td {
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
-                max-width: 90mm !important;
+                padding: 4px 2px !important;
+            }
+
+            .invoice-box h1,
+            .invoice-box h2,
+            .invoice-box h3,
+            .invoice-box h4,
+            .invoice-box h5 {
+                page-break-after: avoid !important;
+                margin: 8px 0 4px 0 !important;
             }
 
             .invoice-box h4 {
+                font-size: 14px !important;
+            }
+
+            .invoice-box p {
+                margin: 4px 0 !important;
+                line-height: 1.4 !important;
+                font-size: 13px !important;
+            }
+
+            .hex-img {
+                text-align: center !important;
+                page-break-after: avoid !important;
+            }
+
+            .hex-img img {
+                max-width: 100% !important;
+                width: auto !important;
+                height: auto !important;
+            }
+
+            .invoice-box img {
+                max-width: 100% !important;
+                width: auto !important;
+                height: auto !important;
+            }
+
+            .ps-info {
                 page-break-inside: avoid !important;
-                margin-bottom: 5px !important;
-                display: block !important;
-                width: 100% !important;
+                margin: 4px 0 !important;
             }
 
             ul.occu-list {
                 margin: 0 !important;
-                padding-left: 20px !important;
+                padding: 0 0 0 18px !important;
                 display: block !important;
                 width: 100% !important;
+                list-style: none !important;
             }
 
             ul.occu-list li {
                 float: left !important;
-                width: 48% !important;
-                margin-right: 2% !important;
-                margin-bottom: 3px !important;
-                font-size: 13px !important;
+                width: 45% !important;
+                margin: 0 2% 2px 0 !important;
+                padding: 2px 4px !important;
+                font-size: 12px !important;
                 page-break-inside: avoid !important;
                 list-style-position: inside !important;
+                list-style-type: circle !important;
+                box-sizing: border-box !important;
+                line-height: 1.3 !important;
+            }
+
+            .ps-info h4,
+            div h4 {
+                page-break-after: avoid !important;
+                margin-bottom: 2px !important;
+            }
+
+            /* Clearfix for floated occupation list */
+            ul.occu-list::after {
+                content: "" !important;
+                display: table !important;
+                clear: both !important;
+            }
+
+            /* User details styling */
+            .user-details-rw {
+                background: #0B617E !important;
+                color: white !important;
+            }
+
+            .user-details-rw td {
+                color: white !important;
+            }
+
+            .user-details-rw b {
+                color: white !important;
+            }
+
+            .theme-color {
+                color: #2d71a1 !important;
+                font-weight: bold !important;
+            }
+
+            .bar-wrap {
+                background: #b6e2ea !important;
+            }
+
+            .bar {
+                background: #0B617E !important;
+            }
+
+            /* Prevent page breaks in critical sections */
+            tr.top,
+            tr.information {
+                page-break-inside: avoid !important;
             }
         }
 
