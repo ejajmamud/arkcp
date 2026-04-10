@@ -1,0 +1,1474 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Summary Report</title>
+
+                
+    <style>
+        @media  print {
+            .download-report-link {
+                display: none !important;
+            }
+
+            body {
+                margin: 0;
+            }
+
+            .invoice-box {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+        @font-face {
+        font-family: 'Adobe Caslon Pro';
+        src: url('http://ooisolutions.asia/fonts/ACaslonPro/ACaslonPro-Regular.woff2') format('woff2'),
+            url('http://ooisolutions.asia/fonts/ACaslonPro/ACaslonPro-Regular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+    }
+        body {
+            font-family: Calibri;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: #2d71a1;
+            margin-bottom: 5px !important;
+            font-family: Calibri;
+        }
+
+        h3 {
+            padding: 15px 0px 5px !important;
+        }
+
+        h2 {
+            margin-top: -10px;
+            padding-top: 0px;
+        }
+
+        .information .user-details-rw {
+            background: #0B617E;
+            color: #fff;
+        }
+
+        .information .user-details-rw td {
+            padding-top: 10px;
+        }
+
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            font-size: 16px;
+            line-height: 26px;
+            font-family: Calibri;
+            color: #3a3a3a;
+        }
+
+        .invoice-box .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: justify;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: left;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 10px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        /* .invoice-box table tr.top table td.title img {
+            float: right;
+        } */
+        .invoice-box table tr.information table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 0px;
+            padding-left: 10px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            /*   border-top: 2px solid #eee; */
+            font-weight: bold;
+            color: #000;
+        }
+
+        table.user-details td {
+            padding-bottom: 5px !important;
+            text-align: left !important;
+        }
+
+        p.summary-code-text {
+            font-size: 16px;
+            font-weight: 400;
+            margin-left: 5px;
+            color: #2d71a1;
+        }
+
+        p.summary-code-text:first-letter {
+            font-size: 28px;
+            font-weight: 800;
+            margin-right: 3px;
+        }
+
+        .hex-img {
+            text-align: center;
+            padding: 15px 0 5px;
+        }
+
+        .hex-img img {
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+        }
+
+        /* chart sytles */
+        .chart-wrap {
+            max-width: 400px;
+            margin-top: 20px;
+        }
+
+        .chart-wrap .chart-title {
+            margin-bottom: 10px;
+            font-size: 16px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .chart-wrap .row {
+            position: relative;
+            height: 26px;
+            margin-bottom: 15px;
+        }
+
+        .chart-wrap .bar-wrap {
+            position: relative;
+            background: #f5f5f5;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .chart-wrap .bar-wrap .bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #f37167;
+            transition: all 1s;
+            transform: translateX(-100%);
+        }
+
+        .chart-wrap .bar-wrap .bar.in {
+            transform: translateX(0%);
+        }
+
+        .chart-wrap .row:nth-of-type(1) .bar {
+            transition: 1s 400ms;
+            background: rgb(234, 17, 132);
+            background: linear-gradient(90deg, rgba(241, 87, 49, 1) 0%, rgba(234, 17, 132, 1) 100%);
+        }
+
+        .chart-wrap .row:nth-of-type(2) .bar {
+            transition: 1s 600ms;
+            background: rgb(24, 111, 189);
+            background: linear-gradient(90deg, rgba(24, 111, 189, 1) 0%, rgba(14, 165, 231, 1) 100%);
+        }
+
+        .chart-wrap .row:nth-of-type(3) .bar {
+            transition: 1s 800ms;
+            background: rgb(102, 44, 142);
+            background: linear-gradient(90deg, rgba(102, 44, 142, 1) 0%, rgba(185, 16, 129, 1) 100%);
+        }
+
+        .chart-wrap .row:nth-of-type(4) .bar {
+            transition: 1s 1000ms;
+            background: rgb(13, 176, 231);
+            background: linear-gradient(90deg, rgba(13, 176, 231, 1) 0%, rgba(19, 195, 172, 1) 100%);
+        }
+
+        .chart-wrap .row:nth-of-type(5) .bar {
+            transition: 1s 1200ms;
+            background: rgb(157, 211, 65);
+            background: linear-gradient(90deg, rgba(157, 211, 65, 1) 0%, rgba(250, 239, 64, 1) 100%);
+        }
+
+        .chart-wrap .row:nth-of-type(6) .bar {
+            transition: 1s 1400ms;
+            background: rgb(246, 123, 49);
+            background: linear-gradient(90deg, rgba(246, 123, 49, 1) 0%, rgba(251, 196, 55, 1) 100%);
+        }
+
+        .chart-wrap .row:nth-of-type(7) .bar {
+            transition: 1s 1600ms;
+        }
+
+        .bar.Artistic {
+            background: rgb(234, 17, 132);
+        }
+
+        .bar.Social {
+            background: rgb(24, 111, 189);
+        }
+
+        .bar.Realistic {
+            background: rgb(102, 44, 142);
+        }
+
+        .bar.Conventional {
+            background: rgb(13, 176, 231);
+        }
+
+        .bar.Investigative {
+            background: rgb(157, 211, 65);
+        }
+
+        .bar.Enterprising {
+            background: rgb(246, 123, 49);
+        }
+
+        .chart-wrap .label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            padding-left: 10px;
+            text-align: left;
+            font-size: 12px;
+            line-height: 26px;
+            text-transform: uppercase;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .chart-wrap .number {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 30px;
+            padding-right: 10px;
+            font-size: 18px;
+            line-height: 26px;
+            font-weight: bold;
+            text-align: right;
+            z-index: 10;
+        }
+
+        @media  screen and (min-width: 800px) {
+            .chart-wrap .row {
+                padding: 0 40px 0 90px;
+            }
+
+            .chart-wrap .label {
+                text-align: right;
+                padding-left: 0;
+            }
+
+            .chart-wrap .number {
+                text-align: left;
+                padding-right: 0;
+            }
+        }
+
+
+        @media  only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.top table td.title img {
+                float: inherit;
+            }
+
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+
+        /** RTL **/
+        .rtl {
+            direction: rtl;
+            font-family: Calibri;
+            
+        }
+
+        .rtl table {
+            text-align: right;
+        }
+
+        .rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+
+        .inv-details td {
+            padding: 0px !important;
+        }
+
+        tr.total td {
+            border-top: 1px solid #111
+        }
+
+        .inv-details td {
+            text-align: left !important;
+            float: left;
+            width: 50% !important;
+        }
+
+        .heading th {
+            background: #2d71a1;
+            color: #fff;
+            padding: 5px 10px;
+        }
+
+        .heading2 th {
+            background: #1b4a6b;
+            color: #fff;
+            padding: 5px 10px;
+        }
+
+        strong {
+            color: #000;
+        }
+
+        .item td {
+            font-size: 15px;
+            padding: 10px 5px !important;
+        }
+
+        @media  screen and (max-width: 600px) {
+            table.itm-list {
+                border: 0;
+            }
+
+            table.user-details tr td:first-child {
+                display: none !important;
+            }
+
+            table.user-details tr td::before {
+                width: 30% !important;
+            }
+
+            table.user-details tr {
+                border: none !important;
+                padding: 5px 15px 0px !important;
+                margin-bottom: 0px !important;
+            }
+
+            table.itm-list caption {
+                font-size: 1.3em;
+            }
+
+            table.itm-list .heading {
+                border: none;
+                clip: rect(0 0 0 0);
+                height: 1px;
+                margin: -1px;
+                overflow: hidden;
+                padding: 0;
+                position: absolute;
+                width: 1px;
+            }
+
+            table.itm-list tr {
+                border: 1px solid #eee;
+                display: block;
+                margin-bottom: .625em;
+                border-radius: 5px;
+                box-shadow: 0 0 3px -2px rgba(0, 0, 0, 0.2);
+                padding: 10px 15px;
+            }
+
+            table.itm-list td {
+                border-bottom: 1px solid #eee;
+                display: block;
+                font-size: .8em;
+                text-align: right;
+            }
+
+            table.itm-list td::before {
+                /*
+                * aria-label has no advantage, it won't be read inside a table
+                content: attr(aria-label);
+                */
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            table.itm-list td:last-child {
+                border-bottom: 0;
+            }
+        }
+
+        td#summaryCode .d-flex {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        td#summaryCode .d-flex div {
+            padding: 0px 5px !important;
+        }
+
+        td#summaryCode .d-flex p {
+            margin: 0px !important;
+            text-align: center;
+        }
+
+        td#summaryCode .d-flex h2 {
+            background: #B6E2EA;
+            width: 30px;
+            margin: 5px 0px !important;
+            height: 30px;
+            line-height: 1.5;
+            text-align: center;
+            font-size: 24px;
+            padding: 3px 0px;
+        }
+
+        span.theme-color {
+            color: #2d71a1;
+        }
+
+        ul.occu-list li {
+            width: 47%;
+            float: left;
+            margin-right: 3%;
+            
+        }
+
+        ul.occu-list {
+            margin: 0px !important;
+            text-align: left;
+            line-height: 1.5;
+        }
+        .ps-info {
+            display: block;
+            padding-bottom: 5px;
+        }
+        .ps-info p {
+            margin: 0px 0px 10px;
+        }
+        .capitalize {text-transform: capitalize !important;}
+
+        .download-report-link {
+            background-image: url(http://arkcp.test/img/download-icon.png);
+            float: right;
+            background-size: 64px;
+            width: 64px;
+            height: 64px;
+            padding-left: 66px;
+            display: flex;
+            align-items: center;
+            background-repeat: no-repeat;
+        }
+
+        .download-report-link a {
+            font-size: 14px;
+            line-height: 20px;
+            color: #2d71a1;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <img src="file:///C:/xampp/htdocs/arkcp/laravel/public/img/career-preference-logo.jpg"
+                                 style="max-width: 250px;">
+                            <h4 style="margin: 7px 0px;font-size: 18px;">www.ark.com.my</h4>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+
+        <tr class="information">
+            <td colspan="2">
+                <table>
+
+                    <tr>
+                        <td colspan="2" style="padding-bottom: 10px;"><h1>Career Preference Report</h1></td>
+                    </tr>
+                    <tr class="user-details-rw">
+                        <td style="padding-right: 6%;">
+                            <table class="user-details itm-list">
+                                <tr>
+                                    <td>Name</td>
+                                    <td data-label="Name" class="capitalize">: <b>Teegan Cash</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Age</td>
+                                    <td data-label="Age">: <b> 72 </b></td>
+                                </tr>
+                                <tr>
+                                    <td>Gender</td>
+                                    <td data-label="Gender" class="capitalize">: <b> female </b></td>
+                                </tr>
+
+                            </table>
+                        </td>
+
+                        <td style="padding-right: 6%;">
+                            <table class="user-details itm-list">
+                                <tr>
+                                    <td>Group</td>
+                                    <td data-label="Group" class="capitalize">: <b> College/University </b></td>
+                                </tr>
+                                <tr>
+                                    <td>Test Date</td>
+                                    <td data-label="Test Date">: <b> 09-04-2026  </b></td>
+                                </tr>
+                                <tr>
+                                    <td>Country</td>
+                                    <td data-label="Country" class="capitalize">: <b>VE </b></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <tr class="information">
+            <td>
+                <h3>RIASEC Personality Type Score</h3>
+
+                <div class="">
+                                            <div class="row"
+                             style="padding: 0 40px 0 160px; position: relative; height: 26px; margin-bottom: 15px;">
+                                <span class="label"
+                                      style="position: absolute; top: 0; left: 0; width: 140px; padding-left: 10px; text-align: right; font-size: 16px; line-height: 26px; text-transform: uppercase; font-weight: bold; z-index: 10; color: #0B617E;">Enterprising</span>
+                            <div class="bar-wrap"
+                                 style="position: relative; background: #b6e2ea; width: 100%; height: 100%; overflow: hidden;">
+                                <div class="bar Enterprising" data-value="10"
+                                     style="width:66.6666666667%;position: absolute;top: 0;left: 0;height: 100%;background: #0B617E;"></div>
+                            </div>
+                            <span class="number"
+                                  style="position: absolute; top: 0; right: 0; width: 30px; padding-right: 10px; font-size: 18px; line-height: 26px; font-weight: bold; text-align: right; z-index: 10; text-align: center;">10</span>
+                        </div>
+                                            <div class="row"
+                             style="padding: 0 40px 0 160px; position: relative; height: 26px; margin-bottom: 15px;">
+                                <span class="label"
+                                      style="position: absolute; top: 0; left: 0; width: 140px; padding-left: 10px; text-align: right; font-size: 16px; line-height: 26px; text-transform: uppercase; font-weight: bold; z-index: 10; color: #0B617E;">Investigative</span>
+                            <div class="bar-wrap"
+                                 style="position: relative; background: #b6e2ea; width: 100%; height: 100%; overflow: hidden;">
+                                <div class="bar Investigative" data-value="9"
+                                     style="width:60.00000000003%;position: absolute;top: 0;left: 0;height: 100%;background: #0B617E;"></div>
+                            </div>
+                            <span class="number"
+                                  style="position: absolute; top: 0; right: 0; width: 30px; padding-right: 10px; font-size: 18px; line-height: 26px; font-weight: bold; text-align: right; z-index: 10; text-align: center;">9</span>
+                        </div>
+                                            <div class="row"
+                             style="padding: 0 40px 0 160px; position: relative; height: 26px; margin-bottom: 15px;">
+                                <span class="label"
+                                      style="position: absolute; top: 0; left: 0; width: 140px; padding-left: 10px; text-align: right; font-size: 16px; line-height: 26px; text-transform: uppercase; font-weight: bold; z-index: 10; color: #0B617E;">Realistic</span>
+                            <div class="bar-wrap"
+                                 style="position: relative; background: #b6e2ea; width: 100%; height: 100%; overflow: hidden;">
+                                <div class="bar Realistic" data-value="9"
+                                     style="width:60.00000000003%;position: absolute;top: 0;left: 0;height: 100%;background: #0B617E;"></div>
+                            </div>
+                            <span class="number"
+                                  style="position: absolute; top: 0; right: 0; width: 30px; padding-right: 10px; font-size: 18px; line-height: 26px; font-weight: bold; text-align: right; z-index: 10; text-align: center;">9</span>
+                        </div>
+                                            <div class="row"
+                             style="padding: 0 40px 0 160px; position: relative; height: 26px; margin-bottom: 15px;">
+                                <span class="label"
+                                      style="position: absolute; top: 0; left: 0; width: 140px; padding-left: 10px; text-align: right; font-size: 16px; line-height: 26px; text-transform: uppercase; font-weight: bold; z-index: 10; color: #0B617E;">Artistic</span>
+                            <div class="bar-wrap"
+                                 style="position: relative; background: #b6e2ea; width: 100%; height: 100%; overflow: hidden;">
+                                <div class="bar Artistic" data-value="8"
+                                     style="width:53.33333333336%;position: absolute;top: 0;left: 0;height: 100%;background: #0B617E;"></div>
+                            </div>
+                            <span class="number"
+                                  style="position: absolute; top: 0; right: 0; width: 30px; padding-right: 10px; font-size: 18px; line-height: 26px; font-weight: bold; text-align: right; z-index: 10; text-align: center;">8</span>
+                        </div>
+                                            <div class="row"
+                             style="padding: 0 40px 0 160px; position: relative; height: 26px; margin-bottom: 15px;">
+                                <span class="label"
+                                      style="position: absolute; top: 0; left: 0; width: 140px; padding-left: 10px; text-align: right; font-size: 16px; line-height: 26px; text-transform: uppercase; font-weight: bold; z-index: 10; color: #0B617E;">Conventional</span>
+                            <div class="bar-wrap"
+                                 style="position: relative; background: #b6e2ea; width: 100%; height: 100%; overflow: hidden;">
+                                <div class="bar Conventional" data-value="4"
+                                     style="width:26.66666666668%;position: absolute;top: 0;left: 0;height: 100%;background: #0B617E;"></div>
+                            </div>
+                            <span class="number"
+                                  style="position: absolute; top: 0; right: 0; width: 30px; padding-right: 10px; font-size: 18px; line-height: 26px; font-weight: bold; text-align: right; z-index: 10; text-align: center;">4</span>
+                        </div>
+                                            <div class="row"
+                             style="padding: 0 40px 0 160px; position: relative; height: 26px; margin-bottom: 15px;">
+                                <span class="label"
+                                      style="position: absolute; top: 0; left: 0; width: 140px; padding-left: 10px; text-align: right; font-size: 16px; line-height: 26px; text-transform: uppercase; font-weight: bold; z-index: 10; color: #0B617E;">Social</span>
+                            <div class="bar-wrap"
+                                 style="position: relative; background: #b6e2ea; width: 100%; height: 100%; overflow: hidden;">
+                                <div class="bar Social" data-value="1"
+                                     style="width:6.66666666667%;position: absolute;top: 0;left: 0;height: 100%;background: #0B617E;"></div>
+                            </div>
+                            <span class="number"
+                                  style="position: absolute; top: 0; right: 0; width: 30px; padding-right: 10px; font-size: 18px; line-height: 26px; font-weight: bold; text-align: right; z-index: 10; text-align: center;">1</span>
+                        </div>
+                                    </div>
+            </td>
+            <td id="summaryCode">
+                <h3>Your Summary Code</h3>
+                <div class="d-flex">
+                    <div><p>Score</p></div>
+                                                                        <div><h2>E</h2>
+                                <p>10</p></div>
+                                                                                                <div><h2>I</h2>
+                                <p>9</p></div>
+                                                                                                <div><h2>R</h2>
+                                <p>9</p></div>
+                                                                                                                                                                                                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <div>
+                    <h3>Introduction</h3>
+                    <p>The Career Assessment report provides you with possible career options that you can
+                        explore based on their summary code (3 letters) generated above based on your test
+                        results. The site also provides suggestions and resources to help you with your career
+                        planning process. Every code is different and may vary in the number of career options
+                        provided below.</p>
+                </div>
+                <div>
+                    <h3>Overview of Holland’s RIASEC types</h3>
+                    <p>The theory is based on extensive research about how people choose careers which
+                        was first developed by Dr. John Holland in 1971. It is the most widely used interest
+                        inventory in the world. It is based upon a theory that people can be loosely classified
+                        into six different personality types; Realistic, Investigative, Artistic, Social,
+                        Enterprising, Conventional (RIASEC).
+                        The theory suggests people prefer jobs/careers where they can be around others who
+                        are like them. They search for environments that will let them use their skills and
+                        abilities, and express their attitudes and values, while taking on enjoyable problems
+                        and roles</p>
+                </div>
+                <div>
+                    <h3>Which type are you?</h3>
+                    <p>RIASEC letters can be used to describe the personality type a person’s interest most
+                        resemble. For example, if their highest code is R a person can be said he is a Realistic
+                        or R type. Take note that a person often resembles several personality types not just
+                        one.
+                        A hexagon is used to show similarities and differences among the 6 types. Types that
+                        are next to each other on the hexagon are the most similar. For example, Realistic and
+                        Investigative
+                        types tend to have similar interest, whereas Realistic and Social types tend to have very
+                        different
+                        interest.
+                        Below are the characteristic and important information about the six types. Think about how it
+                        relates
+                        to you as you read the six types.</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3>The Personality Types</h3>
+                <div class="hex-img">
+                    <img src="file:///C:/xampp/htdocs/arkcp/laravel/public/img/report_hex_clean_v2.png" alt="RIASEC hexagon">
+                </div>
+                <div class="ps-info">
+                        <h4>REALISTIC</h4>
+                        <p>
+                            Realistic people tend to have athletic interests, prefer to work with objects, machines, tools, plants or animals, and like to be outdoors.
+                         </p>
+                         <p> <span class="theme-color">Characteristics:</span> Independent, Practical, Systematic, Self-Controlled, and Straightforward
+                          <br> <span class="theme-color">Working Environment:</span> Agriculture, Construction, Manufacturing, Distribution, Transport, Shipping and Aviation
+                        </p>
+                </div>
+                <div class="ps-info">
+                        <h4>INVESTIGATIVE </h4>
+                        <p>
+                            Investigative people like to observe, learn, investigate, analyze, and solve problems 
+                        </p>
+                         <p> <span class="theme-color">Characteristics:</span> Logical, Curious, Thoughtful, Observant, and Intellectual
+                          <br> <span class="theme-color">Working Environment:</span> Academic Education, IT, Healthcare and Innovative Companies
+                        </p>
+                </div>
+                <div class="ps-info">
+                        <h4>ARTISTIC</h4>
+                        <p>
+                            Artistic people like to work in unstructured situations using their imagination and creativity
+                         </p>
+                         <p> <span class="theme-color">Characteristics:</span> Creative, Imaginative, Unconventional, Expressive, Innovative, and Impulsive
+                          <br> <span class="theme-color">Working Environment:</span> Advertising, Music & Entertainment industry, Theatre, Art sector and at companies
+                          in the field of creative design
+                        </p>
+                </div>
+                <div class="ps-info">
+                        <h4>SOCIAL</h4>
+                        <p>
+                            Social people like to work with people to inspire, inform, help, train or cure them
+                         </p>
+                         <p> <span class="theme-color">Characteristics:</span> Patient, Insightful, Responsible, Cooperative, Outgoing, and Skilled with words
+                          <br> <span class="theme-color">Working Environment:</span> Government, Education, Health Care and Social Services.
+                        </p>
+                </div>
+                <div class="ps-info">
+                        <h4>ENTERPRISING </h4>
+                        <p>
+                            Enterprising people like to work with people to influence, persuade and lead them, and to achieve organizational or financial goals.
+                         </p>
+                         <p> <span class="theme-color">Characteristics:</span> Assertive, Energetic, Persuasive, Ambitious, Optimistic
+                          <br> <span class="theme-color">Working Environment:</span> Management, Sales & Marketing, Trade, Administration and Politics
+                        </p>
+                </div>
+                <div class="ps-info">
+                        <h4>CONVENTIONAL</h4>
+                        <p>
+                            Conventional people like to work with information, carry out detailed tasks, and have clerical or numerical interests.
+                        </p>
+                         <p> <span class="theme-color">Characteristics:</span> Efficient, Well-Organized, Persistent, Methodical, or Conscientious
+                          <br> <span class="theme-color">Working Environment:</span> Banking & Finance, Management & Administrative, Government
+                        </p>
+
+                    </div>
+                
+            </td>
+        </tr>
+        <tr>
+                <td colspan="2">
+                    <div>
+                        <h3> Careers That Matches Your Personality Type</h3>
+                        <p>
+                            Below are the jobs for your 3 highest summary codes. The first letter of your code represents the careers most
+                            suitable for your personality type. The second letter represents the next careers most suitable for your personality
+                            type and so on. The types not included in the three summary codes are careers least suitable for your personality
+                            type.
+                           </p>
+                        <p>You can print (a PDF report has also been sent to your email provided) and go through the careers listed below
+                            and tick / highlight careers that you have interest in and mark a question mark for those that you are interested in
+                            but need to research for more information.
+                           </p>
+                         <p>Explore if the careers match your own dream careers. Narrow down your career choices and research them in detail.
+                            If the careers suggested does not match your interest, don’t quickly change your plans. Instead, do some
+                            investigation to make sure you understand the career you have chosen and those suggested in this report. No single
+                            test or resource can provide you with “one” right choice. Only you can make your career decision. All the best in
+                            your future!
+                        </p>
+                    </div>
+                </td>
+            </tr>
+        <tr>
+            <td colspan="2">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td colspan="2"><h2 style="margin-top: 25px;"><b>Exploring Occupations</b></h2></td>
+                        </tr>
+                                                    <tr>
+                                <td colspan="2">
+                                    <div>
+                                        <h4 style="text-transform: uppercase;width: 100%;display: flex">Enterprising OCCUPATIONS</h4>
+                                        <ul class="occu-list">
+                                                                                                                                                <li>Administrative Law Judges, Adjudicators, and Hearing Officers</li>
+                                                                                                                                                                                                <li>Administrative Services Managers </li>
+                                                                                                                                                                                                <li>Advertising and Promotions Managers (Online &amp; Offline)</li>
+                                                                                                                                                                                                <li>Advertising Sales Agents</li>
+                                                                                                                                                                                                <li>Agents and Business Managers of Artists, Performers, and Athletes </li>
+                                                                                                                                                                                                <li>Air Traffic Controllers</li>
+                                                                                                                                                                                                <li>Aircraft Cargo Handling Supervisors</li>
+                                                                                                                                                                                                <li>Airfield Operations Specialists </li>
+                                                                                                                                                                                                <li>Amusement and Recreation Attendants   </li>
+                                                                                                                                                                                                <li>Appraisers, Real Estate </li>
+                                                                                                                                                                                                <li>Aquacultural Managers</li>
+                                                                                                                                                                                                <li>Architectural and Engineering Managers </li>
+                                                                                                                                                                                                <li>Baristas </li>
+                                                                                                                                                                                                <li>Bartenders </li>
+                                                                                                                                                                                                <li>Biofuels Production Managers </li>
+                                                                                                                                                                                                <li>Biofuels/Biodiesel Technology and Product Development Managers </li>
+                                                                                                                                                                                                <li>Biomass Power Plant Managers </li>
+                                                                                                                                                                                                <li>Brownfield Redevelopment Specialists and Site Managers </li>
+                                                                                                                                                                                                <li>Business Continuity Planners </li>
+                                                                                                                                                                                                <li>Buyers and Purchasing Agents, Farm Products </li>
+                                                                                                                                                                                                <li>Chefs and Head Cooks </li>
+                                                                                                                                                                                                <li>Chief Executives</li>
+                                                                                                                                                                                                <li>Chief of Police </li>
+                                                                                                                                                                                                <li>Chief Sustainability Officers </li>
+                                                                                                                                                                                                <li>Clinical Nurse Specialists </li>
+                                                                                                                                                                                                <li>Clinical Research Coordinators</li>
+                                                                                                                                                                                                <li>Compensation and Benefits Managers</li>
+                                                                                                                                                                                                <li>Computer and Information Systems Managers </li>
+                                                                                                                                                                                                <li>Construction Managers </li>
+                                                                                                                                                                                                <li>Copy Writers</li>
+                                                                                                                                                                                                <li>Credit Counselors </li>
+                                                                                                                                                                                                <li>Criminal Investigators and Special Agents</li>
+                                                                                                                                                                                                <li>Curators </li>
+                                                                                                                                                                                                <li>Customer Service Representatives </li>
+                                                                                                                                                                                                <li>Customs Brokers </li>
+                                                                                                                                                                                                <li>Demonstrators and Product Promoters</li>
+                                                                                                                                                                                                <li>Digital Marketing Specialist/ Search Engine Optimization Strategists </li>
+                                                                                                                                                                                                <li>Directors- Stage, Motion Pictures, Television, and Radio</li>
+                                                                                                                                                                                                <li>Directors, Religious Activities and Education</li>
+                                                                                                                                                                                                <li>Distance Learning Coordinators </li>
+                                                                                                                                                                                                <li>Door-To-Door Sales Workers, News and Street Vendors</li>
+                                                                                                                                                                                                <li>Education Administrators, Elementary and Secondary School</li>
+                                                                                                                                                                                                <li>Education Administrators, Postsecondary </li>
+                                                                                                                                                                                                <li>Energy Brokers </li>
+                                                                                                                                                                                                <li>Farm and Ranch Managers </li>
+                                                                                                                                                                                                <li>Farm Labor Contractors </li>
+                                                                                                                                                                                                <li>Financial Examiners </li>
+                                                                                                                                                                                                <li>Financial Managers, Branch or Department </li>
+                                                                                                                                                                                                <li>First Line Supervisors (General)</li>
+                                                                                                                                                                                                <li>Fitness and Wellness Coordinators </li>
+                                                                                                                                                                                                <li>Flight Attendants </li>
+                                                                                                                                                                                                <li>Food Service Managers </li>
+                                                                                                                                                                                                <li>Forest Fire Fighting and Prevention Supervisors</li>
+                                                                                                                                                                                                <li>Fraud Examiners, Investigators and Analysts</li>
+                                                                                                                                                                                                <li>Fundraisers </li>
+                                                                                                                                                                                                <li>Funeral Service Managers</li>
+                                                                                                                                                                                                <li>Gaming Supervisors &amp; Managers </li>
+                                                                                                                                                                                                <li>General and Operations Managers </li>
+                                                                                                                                                                                                <li>Geothermal Production Managers </li>
+                                                                                                                                                                                                <li>Hosts and Hostesses, Restaurant, Lounge, and Coffee Shop </li>
+                                                                                                                                                                                                <li>Hotel Managers/ Front Office Manager</li>
+                                                                                                                                                                                                <li>Human Resources Managers </li>
+                                                                                                                                                                                                <li>Human Resources Specialists/ Recruiters</li>
+                                                                                                                                                                                                <li>Hydroelectric Production Managers </li>
+                                                                                                                                                                                                <li>Industrial Production Managers </li>
+                                                                                                                                                                                                <li>Information Technology Project Managers </li>
+                                                                                                                                                                                                <li>Instructional Designers and Technologists</li>
+                                                                                                                                                                                                <li>Insurance Sales Agents </li>
+                                                                                                                                                                                                <li>Investment Fund Managers</li>
+                                                                                                                                                                                                <li>Judges, Magistrate Judges, and Magistrates</li>
+                                                                                                                                                                                                <li>Labor Relations Specialists</li>
+                                                                                                                                                                                                <li>Lawyers</li>
+                                                                                                                                                                                                <li>Legislators</li>
+                                                                                                                                                                                                <li>Loan Officer</li>
+                                                                                                                                                                                                <li>Logisticians</li>
+                                                                                                                                                                                                <li>Logistics Managers </li>
+                                                                                                                                                                                                <li>Loss Prevention Managers</li>
+                                                                                                                                                                                                <li>Marketing Executives / Managers (Incl. Digital)</li>
+                                                                                                                                                                                                <li>Mates- Ship, Boat, and Barge</li>
+                                                                                                                                                                                                <li>Medical and Health Services Managers </li>
+                                                                                                                                                                                                <li>Meeting, Convention, and Event Planners </li>
+                                                                                                                                                                                                <li>Morticians, Undertakers, and Funeral Directors</li>
+                                                                                                                                                                                                <li>Municipal Fire Fighting and Prevention Supervisors</li>
+                                                                                                                                                                                                <li>Natural Sciences Managers </li>
+                                                                                                                                                                                                <li>Nursery and Greenhouse Managers</li>
+                                                                                                                                                                                                <li>Online Sellers / Merchants </li>
+                                                                                                                                                                                                <li>Opticians, Dispensing </li>
+                                                                                                                                                                                                <li>Parts Salespersons</li>
+                                                                                                                                                                                                <li>Personal Financial Advisors </li>
+                                                                                                                                                                                                <li>Police Detectives</li>
+                                                                                                                                                                                                <li>Postmasters and Mail Superintendents</li>
+                                                                                                                                                                                                <li>Private Detectives and Investigators </li>
+                                                                                                                                                                                                <li>Producers</li>
+                                                                                                                                                                                                <li>Program Directors</li>
+                                                                                                                                                                                                <li>Property, Real Estate, and Community Association Managers </li>
+                                                                                                                                                                                                <li>Public Relations and Fundraising Managers </li>
+                                                                                                                                                                                                <li>Public Relations Specialists </li>
+                                                                                                                                                                                                <li>Purchasing Managers</li>
+                                                                                                                                                                                                <li>Quality Control Systems Managers</li>
+                                                                                                                                                                                                <li>Railroad Conductors and Yardmasters </li>
+                                                                                                                                                                                                <li>Real Estate Sales Agents / Brokers </li>
+                                                                                                                                                                                                <li>Recycling Coordinators </li>
+                                                                                                                                                                                                <li>Regulatory Affairs Managers </li>
+                                                                                                                                                                                                <li>Retail Loss Prevention Specialists</li>
+                                                                                                                                                                                                <li>Retail Salespersons </li>
+                                                                                                                                                                                                <li>Sales Agents, Financial Services</li>
+                                                                                                                                                                                                <li>Sales Agents, Securities and Commodities</li>
+                                                                                                                                                                                                <li>Sales Engineers</li>
+                                                                                                                                                                                                <li>Sales Managers</li>
+                                                                                                                                                                                                <li>Sales Representatives, Wholesale and Manufacturing, Technical and Scientific </li>
+                                                                                                                                                                                                <li>Securities and Commodities Traders </li>
+                                                                                                                                                                                                <li>Security Managers</li>
+                                                                                                                                                                                                <li>Ship and Boat Captains</li>
+                                                                                                                                                                                                <li>Skincare Specialists </li>
+                                                                                                                                                                                                <li>Social and Community Service Managers </li>
+                                                                                                                                                                                                <li>Social Media Marketing Professionals</li>
+                                                                                                                                                                                                <li>Solar Energy Installation Managers </li>
+                                                                                                                                                                                                <li>Solar Sales Representatives and Assessors </li>
+                                                                                                                                                                                                <li>Spa Managers </li>
+                                                                                                                                                                                                <li>Storage and Distribution Managers </li>
+                                                                                                                                                                                                <li>Supply Chain Managers </li>
+                                                                                                                                                                                                <li>Sustainability Specialists </li>
+                                                                                                                                                                                                <li>Talent Directors</li>
+                                                                                                                                                                                                <li>Technical Directors/Managers</li>
+                                                                                                                                                                                                <li>Telemarketers</li>
+                                                                                                                                                                                                <li>Training and Development Managers </li>
+                                                                                                                                                                                                <li>Transportation Managers </li>
+                                                                                                                                                                                                <li>Travel Guides / Agents</li>
+                                                                                                                                                                                                <li>Wholesale and Retail Buyer </li>
+                                                                                                                                                                                                <li>Wind Energy Operations Managers </li>
+                                                                                                                                                                                                <li>Wind Energy Project Managers </li>
+                                                                                                                                    </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                                                    <tr>
+                                <td colspan="2">
+                                    <div>
+                                        <h4 style="text-transform: uppercase;width: 100%;display: flex">Investigative OCCUPATIONS</h4>
+                                        <ul class="occu-list">
+                                                                                                                                                <li>Aerospace Engineers </li>
+                                                                                                                                                                                                <li>Agricultural Engineers</li>
+                                                                                                                                                                                                <li>Allergists and Immunologists </li>
+                                                                                                                                                                                                <li>Anesthesiologists</li>
+                                                                                                                                                                                                <li>Animal Scientists </li>
+                                                                                                                                                                                                <li>Anthropologists </li>
+                                                                                                                                                                                                <li>Archeologists </li>
+                                                                                                                                                                                                <li>Artificial Intelligence Developer</li>
+                                                                                                                                                                                                <li>Astronomers</li>
+                                                                                                                                                                                                <li>Atmospheric and Space Scientists </li>
+                                                                                                                                                                                                <li>Audiologists </li>
+                                                                                                                                                                                                <li>Big Data Engineer / Architect</li>
+                                                                                                                                                                                                <li>Biochemical Engineers </li>
+                                                                                                                                                                                                <li>Biochemists and Biophysicists</li>
+                                                                                                                                                                                                <li>Bioinformatics Scientists / Technician</li>
+                                                                                                                                                                                                <li>Biologists</li>
+                                                                                                                                                                                                <li>Biomedical Engineers</li>
+                                                                                                                                                                                                <li>Biostatisticians </li>
+                                                                                                                                                                                                <li>Blockchain Developer</li>
+                                                                                                                                                                                                <li>Business Intelligence Analysts </li>
+                                                                                                                                                                                                <li>Chemical Engineers </li>
+                                                                                                                                                                                                <li>Chemical Technicians </li>
+                                                                                                                                                                                                <li>Chemists </li>
+                                                                                                                                                                                                <li>Climate Change Analysts </li>
+                                                                                                                                                                                                <li>Clinical Psychologists </li>
+                                                                                                                                                                                                <li>Cloud Computing Professionals</li>
+                                                                                                                                                                                                <li>Computer and Information Research Scientists </li>
+                                                                                                                                                                                                <li>Computer Hardware Engineers</li>
+                                                                                                                                                                                                <li>Computer Network Architects</li>
+                                                                                                                                                                                                <li>Computer Programmers</li>
+                                                                                                                                                                                                <li>Computer Systems Analysts </li>
+                                                                                                                                                                                                <li>Computer Systems Engineers/Architects </li>
+                                                                                                                                                                                                <li>Cytogenetic Technologists </li>
+                                                                                                                                                                                                <li>Cytotechnologists </li>
+                                                                                                                                                                                                <li>Data Warehousing Specialists </li>
+                                                                                                                                                                                                <li>Database Architects </li>
+                                                                                                                                                                                                <li>Dentists </li>
+                                                                                                                                                                                                <li>Dermatologists </li>
+                                                                                                                                                                                                <li>Diagnostic Medical Sonographers </li>
+                                                                                                                                                                                                <li>Dietitians and Nutritionists </li>
+                                                                                                                                                                                                <li>Economists </li>
+                                                                                                                                                                                                <li>Electrical Engineers </li>
+                                                                                                                                                                                                <li>Electronics Engineers</li>
+                                                                                                                                                                                                <li>Energy Engineers </li>
+                                                                                                                                                                                                <li>Environmental Economists </li>
+                                                                                                                                                                                                <li>Environmental Engineers </li>
+                                                                                                                                                                                                <li>Environmental Restoration Planners </li>
+                                                                                                                                                                                                <li>Environmental Science and Protection Technicians, Including Health </li>
+                                                                                                                                                                                                <li>Environmental Scientists and Specialists, Including Health </li>
+                                                                                                                                                                                                <li>Epidemiologists</li>
+                                                                                                                                                                                                <li>Financial Quantitative Analysts </li>
+                                                                                                                                                                                                <li>Fire Investigators</li>
+                                                                                                                                                                                                <li>Fire-Prevention and Protection Engineers</li>
+                                                                                                                                                                                                <li>Food Scientists and Technologists</li>
+                                                                                                                                                                                                <li>Forensic Science Technicians </li>
+                                                                                                                                                                                                <li>Geneticists</li>
+                                                                                                                                                                                                <li>Geodetic Surveyors</li>
+                                                                                                                                                                                                <li>Geographers</li>
+                                                                                                                                                                                                <li>Geographic Information Systems Technicians </li>
+                                                                                                                                                                                                <li>Geoscientists, Except Hydrologists and Geographers </li>
+                                                                                                                                                                                                <li>Geospatial Information Scientists and Technologists </li>
+                                                                                                                                                                                                <li>Historians</li>
+                                                                                                                                                                                                <li>Human Factors Engineers and Ergonomists </li>
+                                                                                                                                                                                                <li>Hydrologists </li>
+                                                                                                                                                                                                <li>Industrial Ecologists </li>
+                                                                                                                                                                                                <li>Industrial Engineering Technicians </li>
+                                                                                                                                                                                                <li>Industrial Engineering Technologists </li>
+                                                                                                                                                                                                <li>Industrial Engineers </li>
+                                                                                                                                                                                                <li>Industrial Safety and Health Engineers </li>
+                                                                                                                                                                                                <li>Industrial-Organizational Psychologists </li>
+                                                                                                                                                                                                <li>Intelligence Analysts</li>
+                                                                                                                                                                                                <li>IoT Professionals</li>
+                                                                                                                                                                                                <li>Logistics Engineers </li>
+                                                                                                                                                                                                <li>Machine Learning Engineer</li>
+                                                                                                                                                                                                <li>Management Analysts </li>
+                                                                                                                                                                                                <li>Marine Architects </li>
+                                                                                                                                                                                                <li>Marine Engineers </li>
+                                                                                                                                                                                                <li>Market Research Analysts and Marketing Specialists </li>
+                                                                                                                                                                                                <li>Materials Engineers</li>
+                                                                                                                                                                                                <li>Materials Scientists </li>
+                                                                                                                                                                                                <li>Mathematical Technicians</li>
+                                                                                                                                                                                                <li>Mathematicians </li>
+                                                                                                                                                                                                <li>Mechanical Engineers </li>
+                                                                                                                                                                                                <li>Mechatronics Engineers </li>
+                                                                                                                                                                                                <li>Medical and Clinical Laboratory Technologists </li>
+                                                                                                                                                                                                <li>Medical Doctor</li>
+                                                                                                                                                                                                <li>Medical Examiner (Coroner)</li>
+                                                                                                                                                                                                <li>Medical Scientists, Except Epidemiologists </li>
+                                                                                                                                                                                                <li>Microbiologists</li>
+                                                                                                                                                                                                <li>Microsystems Engineers </li>
+                                                                                                                                                                                                <li>Mining and Geological Engineers, Including Mining Safety Engineers</li>
+                                                                                                                                                                                                <li>Mobile Application Developer </li>
+                                                                                                                                                                                                <li>Molecular and Cellular Biologists</li>
+                                                                                                                                                                                                <li>Nanosystems Engineers </li>
+                                                                                                                                                                                                <li>Naturopathic Physicians </li>
+                                                                                                                                                                                                <li>Network and Computer Systems Administrators</li>
+                                                                                                                                                                                                <li>Neurologists </li>
+                                                                                                                                                                                                <li>Neuropsychologists and Clinical Neuropsychologists </li>
+                                                                                                                                                                                                <li>Nuclear Engineers </li>
+                                                                                                                                                                                                <li>Nuclear Medicine Physicians </li>
+                                                                                                                                                                                                <li>Nuclear Medicine Technologists </li>
+                                                                                                                                                                                                <li>Nurse Anesthetists </li>
+                                                                                                                                                                                                <li>Obstetricians and Gynecologists</li>
+                                                                                                                                                                                                <li>Occupational Health and Safety Specialists </li>
+                                                                                                                                                                                                <li>Operations Research Analysts </li>
+                                                                                                                                                                                                <li>Ophthalmologists </li>
+                                                                                                                                                                                                <li>Optometrists </li>
+                                                                                                                                                                                                <li>Orthodontists </li>
+                                                                                                                                                                                                <li>Orthoptists </li>
+                                                                                                                                                                                                <li>Pathologists </li>
+                                                                                                                                                                                                <li>Pediatricians</li>
+                                                                                                                                                                                                <li>Petroleum Engineers</li>
+                                                                                                                                                                                                <li>Pharmacists</li>
+                                                                                                                                                                                                <li>Photonics Engineers </li>
+                                                                                                                                                                                                <li>Physical Medicine and Rehabilitation Physicians </li>
+                                                                                                                                                                                                <li>Physicists </li>
+                                                                                                                                                                                                <li>Podiatrists</li>
+                                                                                                                                                                                                <li>Political Scientists</li>
+                                                                                                                                                                                                <li>Product Safety Engineers</li>
+                                                                                                                                                                                                <li>Prosthodontists </li>
+                                                                                                                                                                                                <li>Psychiatrists </li>
+                                                                                                                                                                                                <li>Radiologists </li>
+                                                                                                                                                                                                <li>Robotics Engineers </li>
+                                                                                                                                                                                                <li>School Psychologists </li>
+                                                                                                                                                                                                <li>Sociologists </li>
+                                                                                                                                                                                                <li>Software Developers, Applications</li>
+                                                                                                                                                                                                <li>Software Developers, Systems Software </li>
+                                                                                                                                                                                                <li>Software Quality Assurance Engineers and Testers </li>
+                                                                                                                                                                                                <li>Soil and Plant Scientists </li>
+                                                                                                                                                                                                <li>Soil and Water Conservationists </li>
+                                                                                                                                                                                                <li>Sports Medicine Physicians </li>
+                                                                                                                                                                                                <li>Surgeons</li>
+                                                                                                                                                                                                <li>Survey Researchers</li>
+                                                                                                                                                                                                <li>Transportation Planners </li>
+                                                                                                                                                                                                <li>Urban and Regional Planners </li>
+                                                                                                                                                                                                <li>Urologists </li>
+                                                                                                                                                                                                <li>Validation Engineers </li>
+                                                                                                                                                                                                <li>Veterinarians </li>
+                                                                                                                                                                                                <li>Water Resource Specialists </li>
+                                                                                                                                                                                                <li>Water/Wastewater Engineers </li>
+                                                                                                                                                                                                <li>Zoologists and Wildlife Biologists </li>
+                                                                                                                                    </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                                                    <tr>
+                                <td colspan="2">
+                                    <div>
+                                        <h4 style="text-transform: uppercase;width: 100%;display: flex">Realistic OCCUPATIONS</h4>
+                                        <ul class="occu-list">
+                                                                                                                                                <li>Aerospace Engineering and Operations Technicians</li>
+                                                                                                                                                                                                <li>Agricultural Inspectors / Technicians</li>
+                                                                                                                                                                                                <li>Aircraft Mechanics and Service Technicians</li>
+                                                                                                                                                                                                <li>Aircraft Structure, Surfaces, Rigging, and Systems Assemblers </li>
+                                                                                                                                                                                                <li>Airline Pilots, Co-pilots, Commercial Pilots and Flight Engineers</li>
+                                                                                                                                                                                                <li>Ambulance Drivers and Attendants</li>
+                                                                                                                                                                                                <li>Anesthesiologist Assistants </li>
+                                                                                                                                                                                                <li>Animal Breeders / Trainers</li>
+                                                                                                                                                                                                <li>Athletes and Sports Competitors</li>
+                                                                                                                                                                                                <li>Audio and Video Equipment Technicians </li>
+                                                                                                                                                                                                <li>Automotive and Watercraft Service Attendants</li>
+                                                                                                                                                                                                <li>Automotive Body, Glass Installers and Related Repairers</li>
+                                                                                                                                                                                                <li>Automotive Engineers &amp; Technicians</li>
+                                                                                                                                                                                                <li>Automotive Mechanics </li>
+                                                                                                                                                                                                <li>Automotive Specialty Technicians </li>
+                                                                                                                                                                                                <li>Aviation Inspectors</li>
+                                                                                                                                                                                                <li>Avionics Technicians</li>
+                                                                                                                                                                                                <li>Baggage Porters and Bellhops</li>
+                                                                                                                                                                                                <li>Bailiffs</li>
+                                                                                                                                                                                                <li>Bakers</li>
+                                                                                                                                                                                                <li>Barbers </li>
+                                                                                                                                                                                                <li>Bicycle Repairers </li>
+                                                                                                                                                                                                <li>Biofuels Processing Technicians </li>
+                                                                                                                                                                                                <li>Biological Technicians </li>
+                                                                                                                                                                                                <li>Biomass Plant Technicians </li>
+                                                                                                                                                                                                <li>Boilermakers </li>
+                                                                                                                                                                                                <li>Brickmasons, Blockmasons, Stonemasons, and Tile and Marble Setters </li>
+                                                                                                                                                                                                <li>Broadcast Technicians</li>
+                                                                                                                                                                                                <li>Bus and Truck Mechanics and Diesel Engine Specialists </li>
+                                                                                                                                                                                                <li>Bus Drivers</li>
+                                                                                                                                                                                                <li>Butchers and Meat Cutters</li>
+                                                                                                                                                                                                <li>Cabinetmaker </li>
+                                                                                                                                                                                                <li>Camera and Photographic Equipment Repairers</li>
+                                                                                                                                                                                                <li>Camera Operators, Television, Video, and Motion Picture </li>
+                                                                                                                                                                                                <li>Cardiovascular Technologists and Technicians </li>
+                                                                                                                                                                                                <li>Carpenters </li>
+                                                                                                                                                                                                <li>Carpet Installers</li>
+                                                                                                                                                                                                <li>Cartographers and Photogrammetrists </li>
+                                                                                                                                                                                                <li>Cement Masons and Concrete Finishers </li>
+                                                                                                                                                                                                <li>Chemical Equipment Operators </li>
+                                                                                                                                                                                                <li>Chemical Plant and System Operators </li>
+                                                                                                                                                                                                <li>Civil Drafters</li>
+                                                                                                                                                                                                <li>Civil Engineering Technicians</li>
+                                                                                                                                                                                                <li>Civil Engineers </li>
+                                                                                                                                                                                                <li>Cleaners of Vehicles and Equipment</li>
+                                                                                                                                                                                                <li>Coating, Painting, and Spraying Machine Setters, Operators</li>
+                                                                                                                                                                                                <li>Coil Winders, Tapers, and Finishers</li>
+                                                                                                                                                                                                <li>Coin, Vending, and Amusement Machine Servicers and Repairers</li>
+                                                                                                                                                                                                <li>Commercial Divers </li>
+                                                                                                                                                                                                <li>Computer Network/User Support Specialists</li>
+                                                                                                                                                                                                <li>Computer, Automated Teller, and Office Machine Repairers</li>
+                                                                                                                                                                                                <li>Construction and Building Inspectors </li>
+                                                                                                                                                                                                <li>Construction Laborers </li>
+                                                                                                                                                                                                <li>Control and Valve Installers and Repairers</li>
+                                                                                                                                                                                                <li>Cooks</li>
+                                                                                                                                                                                                <li>Cooling and Freezing Equipment Operators </li>
+                                                                                                                                                                                                <li>Correctional Officers and Jailers</li>
+                                                                                                                                                                                                <li>Counter Attendants, Cafeteria, Food Concession, and Coffee Shop </li>
+                                                                                                                                                                                                <li>Couriers and Messengers</li>
+                                                                                                                                                                                                <li>Crane and Tower Operators</li>
+                                                                                                                                                                                                <li>Dental Laboratory Technicians </li>
+                                                                                                                                                                                                <li>Derrick Operators, Oil and Gas </li>
+                                                                                                                                                                                                <li>Dredge Operators</li>
+                                                                                                                                                                                                <li>Drilling and Boring Machine Tool Setters, Operators</li>
+                                                                                                                                                                                                <li>Driver/Sales Workers</li>
+                                                                                                                                                                                                <li>Drywall and Ceiling Tile Installers</li>
+                                                                                                                                                                                                <li>Drywall Finishers</li>
+                                                                                                                                                                                                <li>Earth Drillers </li>
+                                                                                                                                                                                                <li>E-Hailing, Taxi Drivers and Chauffeurs </li>
+                                                                                                                                                                                                <li>Electric Motor, Power Tool, and Related Repairers</li>
+                                                                                                                                                                                                <li>Electrical and Electronic Equipment Assemblers </li>
+                                                                                                                                                                                                <li>Electrical and Electronics Installers and Repairers (Transportation / Commericial / Industrial Equipment, Powerhouse, Substation)</li>
+                                                                                                                                                                                                <li>Electrical Drafters</li>
+                                                                                                                                                                                                <li>Electrical Engineering </li>
+                                                                                                                                                                                                <li>Electrical Engineering Technicians / Technologists </li>
+                                                                                                                                                                                                <li>Electrical Power-Line Installers and Repairers </li>
+                                                                                                                                                                                                <li>Electricians </li>
+                                                                                                                                                                                                <li>Electromechanical Engineering Technologists </li>
+                                                                                                                                                                                                <li>Electromechanical Equipment Assemblers</li>
+                                                                                                                                                                                                <li>Electro-Mechanical Technicians </li>
+                                                                                                                                                                                                <li>Electronic Equipment Installers and Repairers, Motor Vehicles</li>
+                                                                                                                                                                                                <li>Electronic Home Entertainment Equipment Installers and Repairers</li>
+                                                                                                                                                                                                <li>Electronics Engineering Technicians / Technologists</li>
+                                                                                                                                                                                                <li>Elevator Installers and Repairers </li>
+                                                                                                                                                                                                <li>Embalmers</li>
+                                                                                                                                                                                                <li>Endoscopy Technicians </li>
+                                                                                                                                                                                                <li>Engine and Other Machine Assemblers </li>
+                                                                                                                                                                                                <li>Environmental Engineering Technicians </li>
+                                                                                                                                                                                                <li>Etchers and Engravers</li>
+                                                                                                                                                                                                <li>Excavating and Loading Machine and Dragline Operators </li>
+                                                                                                                                                                                                <li>Explosives Workers, Ordnance Handling Experts, and Blasters</li>
+                                                                                                                                                                                                <li>Extraction Workers </li>
+                                                                                                                                                                                                <li>Fabric and Apparel Patternmakers</li>
+                                                                                                                                                                                                <li>Farm Equipment Mechanics and Service Technicians</li>
+                                                                                                                                                                                                <li>Farmworkers and Laborers, Crop</li>
+                                                                                                                                                                                                <li>Farmworkers, Farm, Ranch, and Aquacultural Animals</li>
+                                                                                                                                                                                                <li>Fence Erectors </li>
+                                                                                                                                                                                                <li>Fiberglass Laminators and Fabricators</li>
+                                                                                                                                                                                                <li>Firefighters</li>
+                                                                                                                                                                                                <li>First-Line Supervisors of Agricultural Crop and Horticultural Workers </li>
+                                                                                                                                                                                                <li>Fishers and Related Fishing Workers</li>
+                                                                                                                                                                                                <li>Floor Layers, Sanders and Finisher</li>
+                                                                                                                                                                                                <li>Food Preparation Workers </li>
+                                                                                                                                                                                                <li>Food Process / Cooking Machine Operators </li>
+                                                                                                                                                                                                <li>Food Science Technicians</li>
+                                                                                                                                                                                                <li>Forest and Conservation Workers / Technicians </li>
+                                                                                                                                                                                                <li>Forest Fire Inspectors and Prevention Specialists </li>
+                                                                                                                                                                                                <li>Foresters</li>
+                                                                                                                                                                                                <li>Foundry Mold and Coremakers</li>
+                                                                                                                                                                                                <li>Freight and Cargo Inspectors</li>
+                                                                                                                                                                                                <li>Fuel Cell Engineers </li>
+                                                                                                                                                                                                <li>Furnace, Kiln, Oven, Drier, and Kettle Operators </li>
+                                                                                                                                                                                                <li>Furniture Finishers</li>
+                                                                                                                                                                                                <li>Gaming Surveillance Officers and Gaming Investigators</li>
+                                                                                                                                                                                                <li>Gas Compressor and Gas Pumping Station Operators</li>
+                                                                                                                                                                                                <li>Gas Plant Operators</li>
+                                                                                                                                                                                                <li>Gem and Diamond Workers</li>
+                                                                                                                                                                                                <li>Geological Sample Test Technicians </li>
+                                                                                                                                                                                                <li>Geothermal Technicians </li>
+                                                                                                                                                                                                <li>Glass Blowers, Molders, Benders, and Finishers</li>
+                                                                                                                                                                                                <li>Glaziers </li>
+                                                                                                                                                                                                <li>Graders and Sorters, Agricultural Products</li>
+                                                                                                                                                                                                <li>Hazardous Materials Removal Workers </li>
+                                                                                                                                                                                                <li>Heat Treating Equipment Setters, Operators</li>
+                                                                                                                                                                                                <li>Heating and Air Conditioning Mechanics and Installers </li>
+                                                                                                                                                                                                <li>Heavy and Tractor-Trailer Truck Drivers </li>
+                                                                                                                                                                                                <li>Highway Maintenance Workers</li>
+                                                                                                                                                                                                <li>Histotechnologists and Histologic Technicians </li>
+                                                                                                                                                                                                <li>Hoist and Winch Operators</li>
+                                                                                                                                                                                                <li>Home Appliance Repairers</li>
+                                                                                                                                                                                                <li>Hydroelectric Plant Technicians </li>
+                                                                                                                                                                                                <li>Industrial Machinery Mechanics </li>
+                                                                                                                                                                                                <li>Industrial Truck and Tractor Operators </li>
+                                                                                                                                                                                                <li>Installation, Maintenance, and Repair Workers </li>
+                                                                                                                                                                                                <li>Insulation Workers, Floor, Ceiling, and Wall </li>
+                                                                                                                                                                                                <li>Insulation Workers, Mechanical </li>
+                                                                                                                                                                                                <li>Janitors and Cleaners</li>
+                                                                                                                                                                                                <li>Jewelers</li>
+                                                                                                                                                                                                <li>Laborers and Freight, Stock, and Material Movers</li>
+                                                                                                                                                                                                <li>Landscaping and Groundskeeping Workers </li>
+                                                                                                                                                                                                <li>Laundry and Dry-Cleaning Workers</li>
+                                                                                                                                                                                                <li>Lifeguards, Ski Patrol, and Other Recreational Protective Service Workers </li>
+                                                                                                                                                                                                <li>Light Truck or Delivery Services Drivers </li>
+                                                                                                                                                                                                <li>Locksmiths and Safe Repairers</li>
+                                                                                                                                                                                                <li>Locomotive Engineers </li>
+                                                                                                                                                                                                <li>Locomotive Firers</li>
+                                                                                                                                                                                                <li>Log Graders and Scalers</li>
+                                                                                                                                                                                                <li>Logging Equipment Operators</li>
+                                                                                                                                                                                                <li>Machine / Equipment Setters &amp; Operators (All Industries)</li>
+                                                                                                                                                                                                <li>Machinists </li>
+                                                                                                                                                                                                <li>Magnetic Resonance Imaging Technologists </li>
+                                                                                                                                                                                                <li>Maids and Housekeeping Cleaners </li>
+                                                                                                                                                                                                <li>Maintenance and Repair Workers, General / Machinery</li>
+                                                                                                                                                                                                <li>Manicurists and Pedicurists </li>
+                                                                                                                                                                                                <li>Manufactured Building and Mobile Home Installers</li>
+                                                                                                                                                                                                <li>Manufacturing Engineering Technologists </li>
+                                                                                                                                                                                                <li>Manufacturing Engineers </li>
+                                                                                                                                                                                                <li>Manufacturing Production Technicians </li>
+                                                                                                                                                                                                <li>Meat, Poultry, and Fish Cutters and Trimmers</li>
+                                                                                                                                                                                                <li>Mechanical Door Repairers </li>
+                                                                                                                                                                                                <li>Mechanical Drafters</li>
+                                                                                                                                                                                                <li>Mechanical Engineering Technicians / Technologists</li>
+                                                                                                                                                                                                <li>Medical and Clinical Laboratory Technicians </li>
+                                                                                                                                                                                                <li>Medical Appliance Technicians </li>
+                                                                                                                                                                                                <li>Medical Equipment Preparers </li>
+                                                                                                                                                                                                <li>Medical Equipment Repairers</li>
+                                                                                                                                                                                                <li>Metal-Refining Furnace Operators </li>
+                                                                                                                                                                                                <li>Millwrights </li>
+                                                                                                                                                                                                <li>Mobile Heavy Equipment Mechanics</li>
+                                                                                                                                                                                                <li>Model Makers, Metal / Plastic / Wood</li>
+                                                                                                                                                                                                <li>Molding and Casting Workers</li>
+                                                                                                                                                                                                <li>Motion Picture Projectionists</li>
+                                                                                                                                                                                                <li>Motorboat Mechanics and Service Technicians</li>
+                                                                                                                                                                                                <li>Motorboat Operators</li>
+                                                                                                                                                                                                <li>Motorcycle Mechanics </li>
+                                                                                                                                                                                                <li>Museum Technicians and Conservators </li>
+                                                                                                                                                                                                <li>Musical Instrument Repairers and Tuners</li>
+                                                                                                                                                                                                <li>Nanotechnology Engineering Technicians / Technologists </li>
+                                                                                                                                                                                                <li>Neurodiagnostic Technologists </li>
+                                                                                                                                                                                                <li>Non-Destructive Testing Specialists</li>
+                                                                                                                                                                                                <li>Nonfarm Animal Caretakers </li>
+                                                                                                                                                                                                <li>Nuclear Equipment Operation Technicians </li>
+                                                                                                                                                                                                <li>Nuclear Monitoring Technicians</li>
+                                                                                                                                                                                                <li>Nuclear Power Reactor Operators </li>
+                                                                                                                                                                                                <li>Nursery Workers</li>
+                                                                                                                                                                                                <li>Operating Engineers and Other Construction Equipment Operators </li>
+                                                                                                                                                                                                <li>Ophthalmic Laboratory Technicians </li>
+                                                                                                                                                                                                <li>Oral and Maxillofacial Surgeons </li>
+                                                                                                                                                                                                <li>Outdoor Power Equipment and Other Small Engine Mechanics</li>
+                                                                                                                                                                                                <li>Packers and Packagers, Hand</li>
+                                                                                                                                                                                                <li>Painters, Construction and Maintenance</li>
+                                                                                                                                                                                                <li>Painters, Transportation Equipment</li>
+                                                                                                                                                                                                <li>Painters, Wall Paper Installer, Plasterers, and Stucco Masons</li>
+                                                                                                                                                                                                <li>Painting, Coating, and Decorating Workers</li>
+                                                                                                                                                                                                <li>Parking Enforcement Workers</li>
+                                                                                                                                                                                                <li>Patternmakers, Wood, Metal and Plastic</li>
+                                                                                                                                                                                                <li>Paving, Surfacing, and Tamping Equipment Operators </li>
+                                                                                                                                                                                                <li>Pest Control Workers </li>
+                                                                                                                                                                                                <li>Pesticide Handlers, Sprayers, and Applicators, Vegetation </li>
+                                                                                                                                                                                                <li>Petroleum Pump System Operators, Refinery Operators, and Gaugers</li>
+                                                                                                                                                                                                <li>Photonics Technicians </li>
+                                                                                                                                                                                                <li>Pile-Driver Operators </li>
+                                                                                                                                                                                                <li>Pilots, Ship</li>
+                                                                                                                                                                                                <li>Pipelayers, Plumbers, Pipefitters, and Steamfitters </li>
+                                                                                                                                                                                                <li>Plumbers </li>
+                                                                                                                                                                                                <li>Police Officers</li>
+                                                                                                                                                                                                <li>Potters, Manufacturing</li>
+                                                                                                                                                                                                <li>Pourers and Casters, Metal</li>
+                                                                                                                                                                                                <li>Power Distributors and Dispatchers </li>
+                                                                                                                                                                                                <li>Power Plant Operators</li>
+                                                                                                                                                                                                <li>Precious Metal Workers</li>
+                                                                                                                                                                                                <li>Precision Agriculture Technicians </li>
+                                                                                                                                                                                                <li>Prepress Technicians and Workers</li>
+                                                                                                                                                                                                <li>Pressers, Textile, Garment, and Related Materials</li>
+                                                                                                                                                                                                <li>Print Binding and Finishing Workers</li>
+                                                                                                                                                                                                <li>Printing Press Operators</li>
+                                                                                                                                                                                                <li>Production Workers </li>
+                                                                                                                                                                                                <li>Pump Operators, Except Wellhead Pumpers </li>
+                                                                                                                                                                                                <li>Radio Frequency Identification Device Specialists</li>
+                                                                                                                                                                                                <li>Radio Mechanics</li>
+                                                                                                                                                                                                <li>Radio Operators</li>
+                                                                                                                                                                                                <li>Radio, Cellular, and Tower Equipment Installers and Repairers</li>
+                                                                                                                                                                                                <li>Radiologic Technicians / Technologists</li>
+                                                                                                                                                                                                <li>Rail Car Repairers</li>
+                                                                                                                                                                                                <li>Rail Yard Engineers, Dinkey Operators, and Hostlers</li>
+                                                                                                                                                                                                <li>Railroad Brake, Signal, and Switch Operators</li>
+                                                                                                                                                                                                <li>Rail-Track Laying and Maintenance Equipment Operators </li>
+                                                                                                                                                                                                <li>Range Managers</li>
+                                                                                                                                                                                                <li>Recreational Vehicle Service Technicians </li>
+                                                                                                                                                                                                <li>Recycling and Reclamation Workers </li>
+                                                                                                                                                                                                <li>Refractory Materials Repairers</li>
+                                                                                                                                                                                                <li>Refrigeration Mechanics and Installers </li>
+                                                                                                                                                                                                <li>Refuse and Recyclable Material Collectors </li>
+                                                                                                                                                                                                <li>Reinforcing Iron and Rebar Workers </li>
+                                                                                                                                                                                                <li>Remote Sensing Scientists and Technologists </li>
+                                                                                                                                                                                                <li>Remote Sensing Technicians </li>
+                                                                                                                                                                                                <li>Riggers</li>
+                                                                                                                                                                                                <li>Robotics Technicians </li>
+                                                                                                                                                                                                <li>Rock Splitters, Quarry</li>
+                                                                                                                                                                                                <li>Roof Bolters, Mining</li>
+                                                                                                                                                                                                <li>Roofers </li>
+                                                                                                                                                                                                <li>Room and Cafeteria Attendants and Bartender Helpers </li>
+                                                                                                                                                                                                <li>Rotary Drill Operators, Oil and Gas </li>
+                                                                                                                                                                                                <li>Roustabouts, Oil and Gas </li>
+                                                                                                                                                                                                <li>Sailors and Marine Oilers</li>
+                                                                                                                                                                                                <li>Security and Fire Alarm Systems Installers </li>
+                                                                                                                                                                                                <li>Security Guards </li>
+                                                                                                                                                                                                <li>Security Management Specialists </li>
+                                                                                                                                                                                                <li>Segmental Pavers </li>
+                                                                                                                                                                                                <li>Semiconductor Processors</li>
+                                                                                                                                                                                                <li>Septic Tank Servicers and Sewer Pipe Cleaners </li>
+                                                                                                                                                                                                <li>Service Unit Operators, Oil, Gas, and Mining </li>
+                                                                                                                                                                                                <li>Sewers, Hand</li>
+                                                                                                                                                                                                <li>Sheet Metal Workers </li>
+                                                                                                                                                                                                <li>Ship Engineers</li>
+                                                                                                                                                                                                <li>Shoe and Leather Workers and Repairers</li>
+                                                                                                                                                                                                <li>Signal and Track Switch Repairers</li>
+                                                                                                                                                                                                <li>Slaughterers and Meat Packers</li>
+                                                                                                                                                                                                <li>Solar Energy Systems Engineers </li>
+                                                                                                                                                                                                <li>Solar Photovoltaic Installers </li>
+                                                                                                                                                                                                <li>Solar Thermal Installers and Technicians </li>
+                                                                                                                                                                                                <li>Sound Engineering Technicians</li>
+                                                                                                                                                                                                <li>Stationary Engineers and Boiler Operators </li>
+                                                                                                                                                                                                <li>Stock Clerks- Stockroom, Warehouse, or Storage Yard </li>
+                                                                                                                                                                                                <li>Stone Cutters and Carvers, Manufacturing</li>
+                                                                                                                                                                                                <li>Structural Iron and Steel Workers </li>
+                                                                                                                                                                                                <li>Structural Metal Fabricators and Fitters </li>
+                                                                                                                                                                                                <li>Subway and Streetcar Operators</li>
+                                                                                                                                                                                                <li>Surgical Technologists </li>
+                                                                                                                                                                                                <li>Surveying Technicians</li>
+                                                                                                                                                                                                <li>Surveyors</li>
+                                                                                                                                                                                                <li>Tailors, Dressmakers, and Custom Sewers</li>
+                                                                                                                                                                                                <li>Tank Car, Truck, and Ship Loaders</li>
+                                                                                                                                                                                                <li>Team Assemblers </li>
+                                                                                                                                                                                                <li>Telecommunications Engineering Specialists</li>
+                                                                                                                                                                                                <li>Telecommunications Equipment Installers and Repairers</li>
+                                                                                                                                                                                                <li>Telecommunications Line Installers and Repairers</li>
+                                                                                                                                                                                                <li>Terrazzo Workers and Finishers </li>
+                                                                                                                                                                                                <li>Tile and Marble Setters </li>
+                                                                                                                                                                                                <li>Timing Device Assemblers and Adjusters</li>
+                                                                                                                                                                                                <li>Tire Builders</li>
+                                                                                                                                                                                                <li>Tire Repairers and Changers</li>
+                                                                                                                                                                                                <li>Tool and Die Makers</li>
+                                                                                                                                                                                                <li>Tool Grinders, Filers, and Sharpeners</li>
+                                                                                                                                                                                                <li>Traffic Technicians</li>
+                                                                                                                                                                                                <li>Transit and Railroad Police</li>
+                                                                                                                                                                                                <li>Transportation Attendants</li>
+                                                                                                                                                                                                <li>Transportation Engineers </li>
+                                                                                                                                                                                                <li>Transportation Security Screeners</li>
+                                                                                                                                                                                                <li>Transportation Vehicle, Equipment and Systems Inspectors</li>
+                                                                                                                                                                                                <li>Tree Trimmers and Pruners </li>
+                                                                                                                                                                                                <li>Umpires, Referees, and Other Sports Officials</li>
+                                                                                                                                                                                                <li>Upholsterers</li>
+                                                                                                                                                                                                <li>Veterinary Assistants and Laboratory Animal Caretakers </li>
+                                                                                                                                                                                                <li>Veterinary Technologists and Technicians </li>
+                                                                                                                                                                                                <li>Watch Repairers</li>
+                                                                                                                                                                                                <li>Water and Wastewater Treatment Plant and System Operators</li>
+                                                                                                                                                                                                <li>Weatherization Installers and Technicians </li>
+                                                                                                                                                                                                <li>Welders, Cutters, and Welder Fitters </li>
+                                                                                                                                                                                                <li>Wellhead Pumpers</li>
+                                                                                                                                                                                                <li>Wind Energy Engineers </li>
+                                                                                                                                                                                                <li>Wind Turbine Service Technicians </li>
+                                                                                                                                    </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                                            </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div>
+                    <h3>Next Steps</h3>
+                    <p>
+                        Identify and highlight those careers that may interest you (about 10-15 careers). You may not be
+                        familiar with some of the careers, don’t worry, circle it and research about it later. You can do your
+                        research by reading books, searching online, reaching out to your network and finding out from those
+                        who are working in the industry, familiarizing yourself with the career of your choice, volunteering or
+                        getting a temp job in the field you are interested in, attending career fairs and seminars or interviewing
+                        industry professionals. Find out as much as you can about those careers that interests you and
+                        eliminate those that does not match your requirements.
+                    </p>
+                    <h4>How do I get more information? </h4>
+                            <p>
+                            Step 1 : Select about ten careers that you are interested in from your career test report.
+                            </p>
+                            <p>
+                            Step 2 : Go to <a href="https://www.onetonline.org/" target="_blank">https://www.onetonline.org/</a>
+                            </p>
+                            <p>
+                            Step 3: Search for information about the ten careers you have short-listed and read about all ten careers.
+                            </p>
+                            <p>
+                            Step 4: After reading about the ten careers, you may drop a few of them. Your list may get shorter.
+                            </p>
+                            <p>
+                            Step 5: Search for universities that offer courses in the fields that you have selected. Explore the entry requirements, tuition fees, duration of the course, etc.
+                            </p>
+                            <p>
+                            Step 6: Apply to the universities when applications are invited. Once the university issues an offer letter, start to make the necessary preparations.
+                            </p>
+                            <p>
+                            If you are in doubt or need further career guidance, write to : <a href="mailto:enquiry@ark.com.my">enquiry @ark.com.my</a>. Our Career Coach will provide you all the necessary assistance you need. This service is provided FREE to all those who take our online career test.
+                            </p>
+                            <p>
+                            Thank you for taking the Career Preference Test !
+                            </p>
+                            <p>
+                            @ Copyright Ark Publications. All Rights Reserved.
+                            </p>
+                </div>
+                
+            </td>
+        </tr>
+        
+    </table>
+</div>
+
+</body>
+</html>

@@ -141,15 +141,12 @@ class ProviderRepository
         $manifest = $this->freshManifest($providers);
 
         foreach ($providers as $provider) {
-            echo "ProviderRepo: Creating $provider\n";
             $instance = $this->createProvider($provider);
-            echo "ProviderRepo: Created instance. Checking defer.\n";
 
             // When recompiling the service manifest, we will spin through each of the
             // providers and check if it's a deferred provider or not. If so we'll
             // add it's provided services to the manifest and note the provider.
             if ($instance->isDeferred()) {
-                echo "ProviderRepo: Is Deferred\n";
                 foreach ($instance->provides() as $service) {
                     $manifest['deferred'][$service] = $provider;
                 }
@@ -161,7 +158,6 @@ class ProviderRepository
             // array of eagerly loaded providers that will get registered on every
             // request to this application instead of "lazy" loading every time.
             else {
-                echo "ProviderRepo: Is Eager\n";
                 $manifest['eager'][] = $provider;
             }
         }
@@ -190,13 +186,12 @@ class ProviderRepository
      */
     public function writeManifest($manifest)
     {
-        if (!is_writable($dirname = dirname($this->manifestPath))) {
+        if (! is_writable($dirname = dirname($this->manifestPath))) {
             throw new Exception("The {$dirname} directory must be present and writable.");
         }
 
         $this->files->replace(
-            $this->manifestPath,
-            '<?php return ' . var_export($manifest, true) . ';'
+            $this->manifestPath, '<?php return '.var_export($manifest, true).';'
         );
 
         return array_merge(['when' => []], $manifest);

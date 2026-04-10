@@ -1,11 +1,17 @@
 
 
 <IfModule mod_rewrite.c>
+    RewriteEngine On
+
     # Prevent access to test files
     RewriteRule ^(student-test\.php)$ - [L]
+
+    # Serve real files and directories from the site root as-is.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
     
     # Original rules
-    RewriteEngine On
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 

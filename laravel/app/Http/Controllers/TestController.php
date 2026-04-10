@@ -260,14 +260,8 @@ class TestController extends Controller
 
             $fileName = str_replace(' ', '_', $student->firstname . '_' . $student->lastname) . '-report.pdf';
 
-            $browserPdfPath = $this->generateBrowserPdfFromSuccessPage(
-                (string) $student->uniqueid,
-                rtrim(request()->getSchemeAndHttpHost(), '/')
-            );
-            if ($browserPdfPath !== null && file_exists($browserPdfPath)) {
-                \Log::info("Browser PDF generated successfully for Student ID: " . $id);
-                return response()->download($browserPdfPath, $fileName)->deleteFileAfterSend(true);
-            }
+            // Headless browser rendering is not available on live server.
+            // Use DomPDF fallback directly for consistent output.
 
             PDF::setOptions([
                 'dpi' => 150,

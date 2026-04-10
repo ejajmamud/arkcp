@@ -56,13 +56,6 @@
                 display: none !important;
             }
 
-            html,
-            body {
-                width: 210mm !important;
-                max-width: 210mm !important;
-                overflow: visible !important;
-            }
-
             body {
                 margin: 0 !important;
                 padding: 0 !important;
@@ -73,51 +66,43 @@
             .invoice-box {
                 box-shadow: none !important;
                 border: none !important;
-                width: 194mm !important;
-                max-width: 194mm !important;
+                max-width: 190mm !important;
                 margin: 0 auto !important;
                 padding: 0 !important;
-                box-sizing: border-box !important;
-                overflow: visible !important;
-            }
-
-            .invoice-box table,
-            .invoice-box tr,
-            .invoice-box td,
-            .invoice-box h2,
-            .invoice-box h3,
-            .invoice-box h4,
-            .invoice-box p,
-            .invoice-box li {
-                max-width: 100% !important;
-                overflow-wrap: anywhere !important;
-                word-break: normal !important;
             }
 
             .invoice-box table {
                 width: 100% !important;
-                table-layout: fixed !important;
+            }
+
+            .invoice-box table td {
+                word-wrap: break-word !important;
+                overflow-wrap: break-word !important;
+                max-width: 90mm !important;
             }
 
             .invoice-box h4 {
+                page-break-inside: avoid !important;
+                margin-bottom: 5px !important;
                 display: block !important;
+                width: 100% !important;
             }
 
             ul.occu-list {
-                display: block !important;
-                column-count: 2 !important;
-                column-gap: 10mm !important;
                 margin: 0 !important;
-                padding-left: 24px !important;
+                padding-left: 20px !important;
+                display: block !important;
+                width: 100% !important;
             }
 
             ul.occu-list li {
-                float: none !important;
-                width: auto !important;
-                margin-right: 0 !important;
-                padding-right: 0 !important;
-                box-sizing: border-box !important;
-                break-inside: avoid-column !important;
+                float: left !important;
+                width: 48% !important;
+                margin-right: 2% !important;
+                margin-bottom: 3px !important;
+                font-size: 13px !important;
+                page-break-inside: avoid !important;
+                list-style-position: inside !important;
             }
         }
 

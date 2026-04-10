@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" role="img" aria-labelledby="title desc">
+  <title id="title">RIASEC Hexagon</title>
+  <desc id="desc">Holland RIASEC hexagon with the letters R I A S E C around the shape.</desc>
+  <rect width="640" height="520" fill="#ffffff"/>
+  <g fill="none" stroke="#0b617e" stroke-width="8" stroke-linecap="square" stroke-linejoin="round">
+    <polygon points="320,80 470,165 470,335 320,420 170,335 170,165"/>
+  </g>
+  <g fill="none" stroke="#1b1b1b" stroke-width="8" stroke-linecap="square">
+    <line x1="265" y1="85" x2="265" y2="25"/>
+    <line x1="440" y1="165" x2="440" y2="130"/>
+    <line x1="405" y1="345" x2="365" y2="345"/>
+    <line x1="255" y1="355" x2="215" y2="355"/>
+    <line x1="170" y1="170" x2="125" y2="170"/>
+  </g>
+  <g fill="#0b617e" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700">
+    <text x="315" y="24" text-anchor="middle">I</text>
+    <text x="490" y="165" dominant-baseline="middle">A</text>
+    <text x="490" y="355" dominant-baseline="middle">S</text>
+    <text x="320" y="492" text-anchor="middle">E</text>
+    <text x="105" y="355" dominant-baseline="middle">C</text>
+    <text x="105" y="165" dominant-baseline="middle">R</text>
+  </g>
+</svg>

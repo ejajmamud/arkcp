@@ -8,7 +8,7 @@ use Illuminate\Support\Traits\EnumeratesValues;
 use Illuminate\Support\Traits\Macroable;
 use stdClass;
 
-class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
+class Collection implements ArrayAccess, Enumerable
 {
     use EnumeratesValues, Macroable;
 
@@ -83,7 +83,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
         $items = $this->map(function ($value) use ($callback) {
             return $callback($value);
         })->filter(function ($value) {
-            return !is_null($value);
+            return ! is_null($value);
         });
 
         if ($count = $items->count()) {
@@ -101,7 +101,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
     {
         $values = (isset($key) ? $this->pluck($key) : $this)
             ->filter(function ($item) {
-                return !is_null($item);
+                return ! is_null($item);
             })->sort()->values();
 
         $count = $values->count();
@@ -117,8 +117,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
         }
 
         return (new static([
-            $values->get($middle - 1),
-            $values->get($middle),
+            $values->get($middle - 1), $values->get($middle),
         ]))->average();
     }
 
@@ -193,8 +192,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
     public function crossJoin(...$lists)
     {
         return new static(Arr::crossJoin(
-            $this->items,
-            ...array_map([$this, 'getArrayableItems'], $lists)
+            $this->items, ...array_map([$this, 'getArrayableItems'], $lists)
         ));
     }
 
@@ -335,7 +333,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
     {
         if ($keys instanceof Enumerable) {
             $keys = $keys->all();
-        } elseif (!is_array($keys)) {
+        } elseif (! is_array($keys)) {
             $keys = func_get_args();
         }
 
@@ -430,7 +428,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
      */
     public function groupBy($groupBy, $preserveKeys = false)
     {
-        if (!$this->useAsCallable($groupBy) && is_array($groupBy)) {
+        if (! $this->useAsCallable($groupBy) && is_array($groupBy)) {
             $nextGroups = $groupBy;
 
             $groupBy = array_shift($nextGroups);
@@ -443,14 +441,14 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
         foreach ($this->items as $key => $value) {
             $groupKeys = $groupBy($value, $key);
 
-            if (!is_array($groupKeys)) {
+            if (! is_array($groupKeys)) {
                 $groupKeys = [$groupKeys];
             }
 
             foreach ($groupKeys as $groupKey) {
                 $groupKey = is_bool($groupKey) ? (int) $groupKey : $groupKey;
 
-                if (!array_key_exists($groupKey, $results)) {
+                if (! array_key_exists($groupKey, $results)) {
                     $results[$groupKey] = new static;
                 }
 
@@ -460,7 +458,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
 
         $result = new static($results);
 
-        if (!empty($nextGroups)) {
+        if (! empty($nextGroups)) {
             return $result->map->groupBy($nextGroups, $preserveKeys);
         }
 
@@ -503,7 +501,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
         $keys = is_array($key) ? $key : func_get_args();
 
         foreach ($keys as $value) {
-            if (!$this->offsetExists($value)) {
+            if (! $this->offsetExists($value)) {
                 return false;
             }
         }
@@ -549,8 +547,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
     public function intersectByKeys($items)
     {
         return new static(array_intersect_key(
-            $this->items,
-            $this->getArrayableItems($items)
+            $this->items, $this->getArrayableItems($items)
         ));
     }
 
@@ -591,7 +588,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
 
         $finalItem = $collection->pop();
 
-        return $collection->implode($glue) . $finalGlue . $finalItem;
+        return $collection->implode($glue).$finalGlue.$finalItem;
     }
 
     /**
@@ -662,7 +659,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
 
             $value = reset($pair);
 
-            if (!isset($dictionary[$key])) {
+            if (! isset($dictionary[$key])) {
                 $dictionary[$key] = [];
             }
 
@@ -811,7 +808,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
     /**
      * Push one or more items onto the end of the collection.
      *
-     * @param  mixed  $values [optional]
+     * @param  mixed  $values
      * @return $this
      */
     public function push(...$values)
@@ -936,7 +933,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
      */
     public function search($value, $strict = false)
     {
-        if (!$this->useAsCallable($value)) {
+        if (! $this->useAsCallable($value)) {
             return array_search($value, $this->items, $strict);
         }
 
@@ -1270,12 +1267,9 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
             return $this->getArrayableItems($items);
         }, func_get_args());
 
-        $params = array_merge([
-            function () {
-                return new static(func_get_args());
-            },
-            $this->items
-        ], $arrayableItems);
+        $params = array_merge([function () {
+            return new static(func_get_args());
+        }, $this->items], $arrayableItems);
 
         return new static(array_map(...$params));
     }
@@ -1297,8 +1291,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
      *
      * @return \ArrayIterator
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator(): \Traversable
+    public function getIterator()
     {
         return new ArrayIterator($this->items);
     }
@@ -1308,7 +1301,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
      *
      * @return int
      */
-    public function count(): int
+    public function count()
     {
         return count($this->items);
     }
@@ -1353,8 +1346,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
      * @param  mixed  $key
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($key): bool
+    public function offsetExists($key)
     {
         return array_key_exists($key, $this->items);
     }
@@ -1365,8 +1357,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
      * @param  mixed  $key
      * @return mixed
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($key): mixed
+    public function offsetGet($key)
     {
         return $this->items[$key];
     }
@@ -1378,8 +1369,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
      * @param  mixed  $value
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($key, $value): void
+    public function offsetSet($key, $value)
     {
         if (is_null($key)) {
             $this->items[] = $value;
@@ -1394,8 +1384,7 @@ class Collection implements ArrayAccess, \Illuminate\Support\Enumerable
      * @param  string  $key
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($key): void
+    public function offsetUnset($key)
     {
         unset($this->items[$key]);
     }

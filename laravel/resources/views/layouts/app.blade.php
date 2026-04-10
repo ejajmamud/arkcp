@@ -20,18 +20,19 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Styles -->
-    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/icofont/icofont.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/aos/aos.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/line-awesome/css/line-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/owl.carousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    @php($assetVersion = '20260410-2')
+    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}?v={{ $assetVersion }}" rel="stylesheet">
+    <link href="{{ asset('vendor/icofont/icofont.min.css') }}?v={{ $assetVersion }}" rel="stylesheet">
+    <link href="{{ asset('vendor/aos/aos.css') }}?v={{ $assetVersion }}" rel="stylesheet">
+    <link href="{{ asset('vendor/line-awesome/css/line-awesome.min.css') }}?v={{ $assetVersion }}" rel="stylesheet">
+    <link href="{{ asset('vendor/owl.carousel/assets/owl.carousel.min.css') }}?v={{ $assetVersion }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}?v={{ $assetVersion }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/navbar-fixed-left.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('fonts/RanilleNormal/stylesheet.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}?v={{ $assetVersion }}" rel="stylesheet">
+    <link href="{{ asset('css/navbar-fixed-left.min.css') }}?v={{ $assetVersion }}" rel="stylesheet">
+    <link href="{{ asset('fonts/RanilleNormal/stylesheet.css') }}?v={{ $assetVersion }}" rel="stylesheet">
     <style>
         .brand-logo-text{
             font-family: 'Ranille Normal','Inter','Poppins','Roboto',sans-serif;
@@ -55,6 +56,7 @@
             100%{ background-position: 0% 50%; }
         }
     </style>
+    @yield('page_styles')
 
     <!-- Google Analytics -->
     <script>

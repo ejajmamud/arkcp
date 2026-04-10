@@ -20,7 +20,10 @@
                   
                 </div>
                 <div class="col-lg-6">
-                  <img src="{{ $banner ? asset('storage/banner/'.$banner) : asset('storage/banner/uafltSXFdbDipkV2isBUuyl7UuAKiz4IiHW3QoZk.png') }}" alt="Hero image" class="img-fluid">
+                  <img
+                    src="{{ $banner ? asset('storage/banner/'.$banner) : asset('storage/banner/uafltSXFdbDipkV2isBUuyl7UuAKiz4IiHW3QoZk.png') }}?v=20260410-3"
+                    alt="Hero image"
+                    class="img-fluid">
                 </div>
           </div>
         </div>

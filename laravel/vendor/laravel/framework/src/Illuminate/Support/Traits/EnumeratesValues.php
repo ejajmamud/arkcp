@@ -149,7 +149,7 @@ trait EnumeratesValues
         }
 
         if ($this->useAsCallable($key)) {
-            return !is_null($this->first($key));
+            return ! is_null($this->first($key));
         }
 
         foreach ($this as $item) {
@@ -236,7 +236,7 @@ trait EnumeratesValues
             $callback = $this->valueRetriever($key);
 
             foreach ($this as $k => $v) {
-                if (!$callback($v, $k)) {
+                if (! $callback($v, $k)) {
                     return false;
                 }
             }
@@ -267,7 +267,7 @@ trait EnumeratesValues
      */
     public function isNotEmpty()
     {
-        return !$this->isEmpty();
+        return ! $this->isEmpty();
     }
 
     /**
@@ -337,7 +337,7 @@ trait EnumeratesValues
         return $this->map(function ($value) use ($callback) {
             return $callback($value);
         })->filter(function ($value) {
-            return !is_null($value);
+            return ! is_null($value);
         })->reduce(function ($result, $value) {
             return is_null($result) || $value < $result ? $value : $result;
         });
@@ -354,7 +354,7 @@ trait EnumeratesValues
         $callback = $this->valueRetriever($callback);
 
         return $this->filter(function ($value) {
-            return !is_null($value);
+            return ! is_null($value);
         })->reduce(function ($result, $item) use ($callback) {
             $value = $callback($item);
 
@@ -390,8 +390,8 @@ trait EnumeratesValues
         $failed = [];
 
         $callback = func_num_args() === 1
-            ? $this->valueRetriever($key)
-            : $this->operatorForWhere(...func_get_args());
+                ? $this->valueRetriever($key)
+                : $this->operatorForWhere(...func_get_args());
 
         foreach ($this as $key => $item) {
             if ($callback($item, $key)) {
@@ -431,7 +431,7 @@ trait EnumeratesValues
      */
     public function when($value, callable $callback = null, callable $default = null)
     {
-        if (!$callback) {
+        if (! $callback) {
             return new HigherOrderWhenProxy($this, $value);
         }
 
@@ -478,7 +478,7 @@ trait EnumeratesValues
      */
     public function unless($value, callable $callback, callable $default = null)
     {
-        return $this->when(!$value, $callback, $default);
+        return $this->when(! $value, $callback, $default);
     }
 
     /**
@@ -685,7 +685,7 @@ trait EnumeratesValues
 
         return $this->filter(function ($value, $key) use ($callback, $useAsCallable) {
             return $useAsCallable
-                ? !$callback($value, $key)
+                ? ! $callback($value, $key)
                 : $value != $callback;
         });
     }
@@ -765,7 +765,7 @@ trait EnumeratesValues
      *
      * @return array
      */
-    public function jsonSerialize(): mixed
+    public function jsonSerialize()
     {
         return array_map(function ($value) {
             if ($value instanceof JsonSerializable) {
@@ -833,7 +833,7 @@ trait EnumeratesValues
      */
     public function __get($key)
     {
-        if (!in_array($key, static::$proxies)) {
+        if (! in_array($key, static::$proxies)) {
             throw new Exception("Property [{$key}] does not exist on this collection instance.");
         }
 
@@ -901,23 +901,15 @@ trait EnumeratesValues
             switch ($operator) {
                 default:
                 case '=':
-                case '==':
-                    return $retrieved == $value;
+                case '==':  return $retrieved == $value;
                 case '!=':
-                case '<>':
-                    return $retrieved != $value;
-                case '<':
-                    return $retrieved < $value;
-                case '>':
-                    return $retrieved > $value;
-                case '<=':
-                    return $retrieved <= $value;
-                case '>=':
-                    return $retrieved >= $value;
-                case '===':
-                    return $retrieved === $value;
-                case '!==':
-                    return $retrieved !== $value;
+                case '<>':  return $retrieved != $value;
+                case '<':   return $retrieved < $value;
+                case '>':   return $retrieved > $value;
+                case '<=':  return $retrieved <= $value;
+                case '>=':  return $retrieved >= $value;
+                case '===': return $retrieved === $value;
+                case '!==': return $retrieved !== $value;
             }
         };
     }
@@ -930,7 +922,7 @@ trait EnumeratesValues
      */
     protected function useAsCallable($value)
     {
-        return !is_string($value) && is_callable($value);
+        return ! is_string($value) && is_callable($value);
     }
 
     /**
@@ -972,7 +964,7 @@ trait EnumeratesValues
     protected function negate(Closure $callback)
     {
         return function (...$params) use ($callback) {
-            return !$callback(...$params);
+            return ! $callback(...$params);
         };
     }
 

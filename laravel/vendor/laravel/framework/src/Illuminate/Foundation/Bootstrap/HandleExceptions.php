@@ -46,7 +46,7 @@ class HandleExceptions
 
         register_shutdown_function([$this, 'handleShutdown']);
 
-        if (!$app->environment('testing')) {
+        if (! $app->environment('testing')) {
             ini_set('display_errors', 'Off');
         }
     }
@@ -65,7 +65,7 @@ class HandleExceptions
      */
     public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
-        if ($level === E_DEPRECATED || $level === E_USER_DEPRECATED) {
+        if (in_array($level, [E_DEPRECATED, E_USER_DEPRECATED], true)) {
             return;
         }
 
@@ -86,7 +86,6 @@ class HandleExceptions
      */
     public function handleException(Throwable $e)
     {
-        file_put_contents('c:\Users\EJAJ\Downloads\cptest.ark.com.my\cptest.ark.com.my\laravel\public\BOOT_FATAL.txt', $e->getMessage() . "\n" . $e->getTraceAsString());
         try {
             self::$reservedMemory = null;
 
@@ -131,7 +130,7 @@ class HandleExceptions
      */
     public function handleShutdown()
     {
-        if (!is_null($error = error_get_last()) && $this->isFatal($error['type'])) {
+        if (! is_null($error = error_get_last()) && $this->isFatal($error['type'])) {
             $this->handleException($this->fatalErrorFromPhpError($error, 0));
         }
     }

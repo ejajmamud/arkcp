@@ -16,7 +16,8 @@
                                 @endphp
                                 @foreach($chunks as $pageIndex => $chunk)
                                     <button class="multisteps-form__progress-btn {{ $pageIndex == 0 ? 'js-active' : '' }}" type="button" title="Page {{ $pageIndex + 1 }}">
-                                        Page {{ $pageIndex + 1 }}
+                                        <span class="multisteps-form__progress-dot" aria-hidden="true"></span>
+                                        <span class="multisteps-form__progress-label">Page {{ $pageIndex + 1 }}</span>
                                     </button>
                                 @endforeach
                             </div>
@@ -82,10 +83,10 @@
 
 @endsection
 
-@section('script')
+@section('page_styles')
 <style>
-    /* Styling overrides to ensure visibility */
-    .multisteps-form__progress {
+    /* Keep the wizard visuals stable even when older global CSS is cached on production. */
+    .multisteps-form .multisteps-form__progress {
         position: relative;
         display: flex;
         align-items: flex-start;
@@ -93,57 +94,118 @@
         gap: 0;
         width: 100%;
         margin: 0 auto;
-        padding-top: 20px;
+        padding: 10px 0 0;
+        --steps-count: 1;
+        --progress-width: 0%;
+        --line-offset: calc((100% / var(--steps-count)) / 2);
     }
-    .multisteps-form__progress::before {
+    .multisteps-form .multisteps-form__progress::before {
         content: '';
         position: absolute;
-        top: 10px;
-        left: 16px;
-        right: 16px;
-        height: 2px;
-        background-color: #d9e2ec;
+        top: 22px;
+        left: var(--line-offset);
+        right: var(--line-offset);
+        height: 4px;
+        background: #d9e2ec;
+        border-radius: 999px;
         z-index: 1;
     }
-    .multisteps-form__progress-btn {
+    .multisteps-form .multisteps-form__progress::after {
+        content: '';
+        position: absolute;
+        top: 22px;
+        left: var(--line-offset);
+        width: var(--progress-width);
+        height: 4px;
+        background: linear-gradient(90deg, #227dc7 0%, #0b617e 100%);
+        border-radius: 999px;
+        z-index: 1;
+        transition: width 0.2s ease;
+    }
+    .multisteps-form .multisteps-form__progress-btn {
         position: relative;
         flex: 1 1 0;
         min-width: 0;
-        height: 24px;
-        padding: 0;
+        min-height: 68px;
+        padding: 0 2px;
         margin: 0;
         border: 0;
         background: transparent;
-        color: transparent;
-        text-indent: -9999px;
-        overflow: hidden;
+        color: #7b8794;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.2;
+        text-align: center;
         outline: none !important;
         cursor: pointer;
         z-index: 2;
+        transition: color 0.15s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        appearance: none;
+        -webkit-appearance: none;
+        box-shadow: none !important;
+        border-radius: 0;
     }
-    .multisteps-form__progress-btn::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 20px;
-        height: 20px;
-        border: 2px solid #9aa5b1;
+    .multisteps-form .multisteps-form__progress-btn::before {
+        content: none !important;
+        display: none !important;
+    }
+    .multisteps-form .multisteps-form__progress-btn::after {
+        content: none !important;
+        display: none !important;
+    }
+    .multisteps-form .multisteps-form__progress-dot {
+        display: block;
+        width: 24px;
+        height: 24px;
+        border: 3px solid #9aa5b1;
         border-radius: 50%;
         background-color: #fff;
-        transform: translateX(-50%);
         box-sizing: border-box;
         transition: transform 0.15s linear, background-color 0.15s linear, border-color 0.15s linear;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 0 0 6px #fff;
     }
-    .multisteps-form__progress-btn.js-active::before {
-        border-color: #007bff;
-        background-color: #007bff;
-        transform: translateX(-50%) scale(1.15);
+    .multisteps-form .multisteps-form__progress-label {
+        display: block;
+        max-width: 100%;
+        white-space: nowrap;
+        text-align: center;
+        position: relative;
+        z-index: 2;
     }
-    .multisteps-form__form {
+    .multisteps-form .multisteps-form__progress-btn:hover .multisteps-form__progress-dot {
+        border-color: #227dc7;
+    }
+    .multisteps-form .multisteps-form__progress-btn.js-active {
+        color: #0b617e;
+    }
+    .multisteps-form .multisteps-form__progress-btn.js-complete {
+        color: #0b617e;
+    }
+    .multisteps-form .multisteps-form__progress-btn.js-complete .multisteps-form__progress-dot {
+        border-color: #227dc7;
+        background-color: #227dc7;
+    }
+    .multisteps-form .multisteps-form__progress-btn.js-active .multisteps-form__progress-dot {
+        border-color: #227dc7;
+        background-color: #227dc7;
+        transform: scale(1.15);
+    }
+    .multisteps-form .multisteps-form__progress-btn:focus,
+    .multisteps-form .multisteps-form__progress-btn:active {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    .multisteps-form .multisteps-form__form {
         position: relative;
     }
-    .multisteps-form__panel {
+    .multisteps-form .multisteps-form__panel {
         position: absolute;
         top: 0;
         left: 0;
@@ -152,13 +214,39 @@
         opacity: 0;
         visibility: hidden;
     }
-    .multisteps-form__panel.js-active {
+    .multisteps-form .multisteps-form__panel.js-active {
         height: auto;
         opacity: 1;
         visibility: visible;
-        position: relative; /* Fix for footer overlap */
+        position: relative;
+    }
+    @media (max-width: 767.98px) {
+        .multisteps-form .multisteps-form__progress {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .multisteps-form .multisteps-form__progress::before,
+        .multisteps-form .multisteps-form__progress::after {
+            top: 18px;
+            height: 3px;
+        }
+        .multisteps-form .multisteps-form__progress-btn {
+            min-height: 42px;
+            gap: 0;
+        }
+        .multisteps-form .multisteps-form__progress-label {
+            display: none;
+        }
+        .multisteps-form .multisteps-form__progress-dot {
+            width: 20px;
+            height: 20px;
+            border-width: 2px;
+        }
     }
 </style>
+@endsection
+
+@section('script')
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -173,6 +261,10 @@ document.addEventListener('DOMContentLoaded', function() {
         stepNextBtnClass: 'js-btn-next'
     };
 
+    if (DOMstrings.stepsBar) {
+        DOMstrings.stepsBar.style.setProperty('--steps-count', Math.max(DOMstrings.stepsBtns.length, 1));
+    }
+
     const removeClasses = (elemSet, className) => {
         elemSet.forEach(elem => {
             elem.classList.remove(className);
@@ -181,11 +273,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const setActiveStep = activeStepNum => {
         removeClasses(DOMstrings.stepsBtns, 'js-active');
+        removeClasses(DOMstrings.stepsBtns, 'js-complete');
         DOMstrings.stepsBtns.forEach((elem, index) => {
-            if (index <= activeStepNum) {
+            if (index < activeStepNum) {
+                elem.classList.add('js-complete');
+            }
+            if (index === activeStepNum) {
                 elem.classList.add('js-active');
             }
         });
+        if (DOMstrings.stepsBar) {
+            const totalSteps = Math.max(DOMstrings.stepsBtns.length - 1, 1);
+            const progressRatio = activeStepNum / totalSteps;
+            DOMstrings.stepsBar.style.setProperty(
+                '--progress-width',
+                'calc((100% - (100% / var(--steps-count))) * ' + progressRatio + ')'
+            );
+        }
     };
 
     const getActivePanel = () => {
@@ -215,20 +319,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
-    const logDebug = (msg) => {
-        let debugDiv = document.getElementById('wizard-debug');
-        if (!debugDiv) {
-            debugDiv = document.createElement('div');
-            debugDiv.id = 'wizard-debug';
-            debugDiv.style = 'position:fixed;bottom:10px;right:10px;background:rgba(0,0,0,0.8);color:white;padding:10px;z-index:9999;font-size:12px;max-width:300px;border-radius:5px;';
-            document.body.appendChild(debugDiv);
-        }
-        debugDiv.innerText = msg;
-        console.log('Wizard Debug:', msg);
-    };
-
     // Initial setup
-    logDebug('Wizard script loaded and ready');
+    setActiveStep(0);
     setTimeout(() => setFormHeight(), 500);
 
     // Prevent direct clicks on dots if not answered
@@ -265,7 +357,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const activePanel = getActivePanel();
             if (!activePanel) {
-                logDebug('Error: Active panel not found during click');
                 return;
             }
 
@@ -276,8 +367,6 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 const totalQuestions = activePanel.querySelectorAll('.question-card').length;
                 const answeredQuestions = activePanel.querySelectorAll('input[type="radio"]:checked').length;
-                
-                logDebug('Step ' + (activePanelNum + 1) + ': Answered ' + answeredQuestions + '/' + totalQuestions);
 
                 if (answeredQuestions < totalQuestions) {
                     alert('Please answer all questions before proceeding.');
