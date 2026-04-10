@@ -48,365 +48,189 @@
     <style>
         @page {
             size: A4;
-            margin: 15mm 15mm 15mm 15mm;
+            margin: 12mm;
         }
 
-        * {
+        .pdf-mode,
+        .pdf-mode * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
-            color-adjust: exact !important;
+            box-sizing: border-box !important;
         }
 
-        html, body {
+        .pdf-mode {
             margin: 0;
             padding: 0;
+            font-family: Calibri, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #3a3a3a;
         }
 
-        @media print {
-            .download-report-link {
-                display: none !important;
-            }
+        .pdf-mode .download-report-link {
+            display: none !important;
+        }
 
-            html, body {
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100% !important;
-                background: white !important;
-            }
+        .pdf-mode .invoice-box {
+            box-shadow: none !important;
+            border: none !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            font-size: 14px !important;
+            line-height: 1.4 !important;
+        }
 
-            body {
-                font-family: Calibri, Arial, sans-serif !important;
-                font-size: 14px !important;
-                line-height: 1.4 !important;
-                color: #333 !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
+        .pdf-mode .invoice-box table {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            table-layout: auto !important;
+        }
 
-            .invoice-box {
-                max-width: 100% !important;
-                width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                border: none !important;
-                box-shadow: none !important;
-                box-sizing: border-box !important;
-            }
+        .pdf-mode .invoice-box table td,
+        .pdf-mode .invoice-box table th {
+            vertical-align: top !important;
+            padding: 4px !important;
+            overflow-wrap: break-word !important;
+            word-wrap: break-word !important;
+            word-break: normal !important;
+        }
 
-            /* MAIN TABLES */
-            .invoice-box table {
-                width: 100% !important;
-                border-collapse: collapse !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                box-sizing: border-box !important;
-                table-layout: auto !important;
-            }
+        .pdf-mode .invoice-box .row {
+            padding: 0 24px 0 120px !important;
+            height: 22px !important;
+            margin-bottom: 10px !important;
+        }
 
-            .invoice-box table td {
-                vertical-align: top !important;
-                padding: 5px 3px !important;
-                margin: 0 !important;
-                box-sizing: border-box !important;
-                word-wrap: break-word !important;
-                overflow-wrap: break-word !important;
-                word-break: break-word !important;
-            }
+        .pdf-mode .invoice-box .label {
+            width: 104px !important;
+            font-size: 12px !important;
+            line-height: 22px !important;
+            padding-left: 0 !important;
+        }
 
-            /* TOP SECTION - Logo and title */
-            tr.top {
-                page-break-inside: avoid !important;
-                border: none !important;
-            }
+        .pdf-mode .invoice-box .number {
+            width: 24px !important;
+            font-size: 14px !important;
+            line-height: 22px !important;
+            padding-right: 0 !important;
+        }
 
-            tr.top table {
-                width: 100% !important;
-            }
+        .pdf-mode .invoice-box h1,
+        .pdf-mode .invoice-box h2,
+        .pdf-mode .invoice-box h3,
+        .pdf-mode .invoice-box h4,
+        .pdf-mode .invoice-box h5 {
+            color: #2d71a1;
+            margin: 8px 0 4px !important;
+            line-height: 1.25 !important;
+            page-break-after: avoid;
+        }
 
-            tr.top table td {
-                padding: 5px !important;
-                text-align: left !important;
-            }
+        .pdf-mode .invoice-box p {
+            margin: 4px 0 !important;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
+        }
 
-            tr.top table td.title {
-                font-size: 16px !important;
-                font-weight: bold !important;
-                text-align: left !important;
-                padding: 5px 0 !important;
-            }
+        .pdf-mode .user-details-rw,
+        .pdf-mode .user-details-rw td,
+        .pdf-mode .user-details-rw b {
+            background: #0B617E !important;
+            color: #fff !important;
+        }
 
-            tr.top img {
-                max-width: 150px !important;
-                height: auto !important;
-                display: block !important;
-            }
+        .pdf-mode .hex-img {
+            text-align: center;
+            padding: 8px 0 4px;
+        }
 
-            /* INFORMATION SECTION */
-            tr.information {
-                page-break-inside: avoid !important;
-            }
+        .pdf-mode .hex-img img {
+            width: 100%;
+            max-width: 360px;
+            height: auto;
+        }
 
-            tr.information table {
-                width: 100% !important;
-            }
+        .pdf-mode .ps-info {
+            page-break-inside: avoid;
+            margin-bottom: 6px;
+        }
 
-            tr.information td {
-                padding: 3px !important;
-            }
+        .pdf-mode ul.occu-list {
+            margin: 0 !important;
+            padding-left: 18px !important;
+            line-height: 1.35 !important;
+            text-align: left;
+        }
 
-            tr.information table td {
-                padding: 5px !important;
-            }
+        .pdf-mode ul.occu-list li {
+            float: left;
+            width: 48%;
+            margin-right: 2%;
+            margin-bottom: 2px;
+            font-size: 12px;
+        }
 
-            /* HEADINGS */
-            h1, h2, h3, h4, h5 {
-                color: #2d71a1 !important;
-                margin: 8px 0 4px 0 !important;
-                padding: 0 !important;
-                line-height: 1.3 !important;
-                page-break-after: avoid !important;
-                font-weight: bold !important;
-            }
+        .pdf-mode ul.occu-list:after {
+            content: "";
+            display: block;
+            clear: both;
+        }
 
-            h1 { font-size: 18px !important; margin: 10px 0 6px 0 !important; }
-            h2 { font-size: 16px !important; margin: 8px 0 4px 0 !important; }
-            h3 { font-size: 14px !important; margin: 8px 0 3px 0 !important; }
-            h4 { font-size: 13px !important; margin: 6px 0 3px 0 !important; }
+        .pdf-mode #summaryCode .d-flex {
+            display: none !important;
+        }
 
-            /* PARAGRAPHS */
-            p {
-                margin: 4px 0 !important;
-                padding: 0 !important;
-                line-height: 1.4 !important;
-                font-size: 13px !important;
-            }
+        .pdf-mode #summaryCode .pdf-summary-code {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            table-layout: fixed !important;
+            margin-top: 4px !important;
+        }
 
-            /* USER DETAILS HEADER */
-            .user-details-rw {
-                background: #0B617E !important;
-                color: white !important;
-                page-break-inside: avoid !important;
-            }
+        .pdf-mode #summaryCode .pdf-summary-code td,
+        .pdf-mode #summaryCode .pdf-summary-code th {
+            text-align: center !important;
+            vertical-align: middle !important;
+            padding: 4px 2px !important;
+            font-size: 13px !important;
+        }
 
-            .user-details-rw td {
-                background: #0B617E !important;
-                color: white !important;
-                padding: 6px 4px !important;
-                font-size: 13px !important;
-            }
+        .pdf-mode #summaryCode .pdf-code-cell {
+            width: 33.33% !important;
+        }
 
-            .user-details-rw b,
-            .user-details-rw strong {
-                color: white !important;
-                font-weight: bold !important;
-            }
+        .pdf-mode #summaryCode .pdf-code-box {
+            display: inline-block !important;
+            width: 30px !important;
+            height: 30px !important;
+            line-height: 30px !important;
+            background: #B6E2EA !important;
+            color: #2d71a1 !important;
+            font-size: 26px !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+        }
 
-            /* USER DETAILS TABLE */
-            table.user-details {
-                width: 100% !important;
-                font-size: 13px !important;
-                margin: 0 !important;
-            }
+        .pdf-mode .pdf-occu-grid {
+            width: 100% !important;
+            border-collapse: collapse !important;
+            table-layout: fixed !important;
+            margin-top: 2px !important;
+        }
 
-            table.user-details tr {
-                page-break-inside: avoid !important;
-                border-bottom: none !important;
-            }
+        .pdf-mode .pdf-occu-grid td {
+            width: 50% !important;
+            vertical-align: top !important;
+            padding: 2px 8px 2px 0 !important;
+            font-size: 12px !important;
+            line-height: 1.35 !important;
+        }
 
-            table.user-details td {
-                padding: 4px 3px !important;
-                border: none !important;
-                text-align: left !important;
-            }
-
-            table.user-details td:first-child {
-                font-weight: 600 !important;
-                width: 30% !important;
-                padding-right: 5px !important;
-            }
-
-            /* CHART SECTION */
-            .chart-wrap {
-                margin: 8px 0 !important;
-                page-break-inside: avoid !important;
-            }
-
-            .chart-wrap .row {
-                position: relative !important;
-                height: 24px !important;
-                margin: 4px 0 !important;
-                padding: 0 !important;
-            }
-
-            .chart-wrap .label {
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 120px !important;
-                padding-right: 5px !important;
-                font-size: 11px !important;
-                text-align: right !important;
-                font-weight: bold !important;
-                text-transform: uppercase !important;
-                line-height: 24px !important;
-                z-index: 10 !important;
-                color: #0B617E !important;
-            }
-
-            .chart-wrap .bar-wrap {
-                position: relative !important;
-                background: #e8f4f8 !important;
-                width: calc(100% - 130px) !important;
-                height: 100% !important;
-                margin-left: 125px !important;
-                overflow: hidden !important;
-                border: 1px solid #ccc !important;
-            }
-
-            .chart-wrap .bar {
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                height: 100% !important;
-                background: #0B617E !important;
-                width: 50% !important;
-            }
-
-            .chart-wrap .number {
-                position: absolute !important;
-                top: 0 !important;
-                right: 0 !important;
-                width: 30px !important;
-                padding: 0 5px !important;
-                font-size: 12px !important;
-                font-weight: bold !important;
-                text-align: right !important;
-                line-height: 24px !important;
-                z-index: 11 !important;
-                background: rgba(255,255,255,0.9) !important;
-            }
-
-            /* SUMMARY CODE */
-            #summaryCode {
-                page-break-inside: avoid !important;
-                padding: 5px !important;
-            }
-
-            #summaryCode .d-flex {
-                display: flex !important;
-                align-items: flex-end !important;
-                gap: 3px !important;
-                margin-top: 5px !important;
-            }
-
-            #summaryCode .d-flex div {
-                flex: 1 !important;
-                text-align: center !important;
-            }
-
-            #summaryCode .d-flex h2 {
-                background: #B6E2EA !important;
-                width: 28px !important;
-                height: 28px !important;
-                line-height: 1.2 !important;
-                text-align: center !important;
-                font-size: 18px !important;
-                padding: 2px !important;
-                margin: 0 !important;
-                border-radius: 2px !important;
-            }
-
-            #summaryCode .d-flex p {
-                font-size: 11px !important;
-                margin: 2px 0 0 0 !important;
-                padding: 0 !important;
-            }
-
-            /* HEX IMAGE */
-            .hex-img {
-                text-align: center !important;
-                page-break-inside: avoid !important;
-                margin: 8px 0 !important;
-                padding: 0 !important;
-            }
-
-            .hex-img img {
-                max-width: 100% !important;
-                width: auto !important;
-                height: auto !important;
-                max-height: 140px !important;
-                display: block !important;
-                margin: 0 auto !important;
-            }
-
-            /* PERSONALITY INFO */
-            .ps-info {
-                page-break-inside: avoid !important;
-                margin: 6px 0 !important;
-                padding: 4px 0 !important;
-                border-bottom: 1px solid #eee !important;
-            }
-
-            .ps-info h4 {
-                font-size: 12px !important;
-                margin: 4px 0 2px 0 !important;
-                padding: 0 !important;
-                font-weight: bold !important;
-                color: #2d71a1 !important;
-                text-transform: uppercase !important;
-            }
-
-            .ps-info p {
-                font-size: 12px !important;
-                margin: 2px 0 !important;
-                padding: 0 !important;
-                line-height: 1.35 !important;
-            }
-
-            /* OCCUPATION LIST */
-            ul.occu-list {
-                margin: 0 !important;
-                padding: 0 !important;
-                display: block !important;
-                width: 100% !important;
-                list-style: none !important;
-                page-break-inside: avoid !important;
-            }
-
-            ul.occu-list li {
-                display: inline-block !important;
-                width: calc(50% - 2px) !important;
-                margin: 0 1% 2px 0 !important;
-                padding: 2px 3px !important;
-                font-size: 12px !important;
-                line-height: 1.3 !important;
-                list-style: circle !important;
-                list-style-position: inside !important;
-                box-sizing: border-box !important;
-                page-break-inside: avoid !important;
-                vertical-align: top !important;
-            }
-
-            /* THEME COLOR */
-            .theme-color {
-                color: #2d71a1 !important;
-                font-weight: bold !important;
-            }
-
-            /* LINKS */
-            a {
-                color: #2d71a1 !important;
-                text-decoration: underline !important;
-            }
-
-            /* UTILITY CLASSES */
-            .capitalize {
-                text-transform: capitalize !important;
-            }
-
-            .text-justify {
-                text-align: justify !important;
-            }
+        .pdf-mode .pdf-occu-bullet {
+            display: inline !important;
+            color: #333 !important;
         }
 
         @font-face {
@@ -904,7 +728,7 @@
     </style>
 </head>
 
-<body>
+<body class="{{ $isPdfMode ? 'pdf-mode' : '' }}">
 
 <div class="invoice-box">
     @if(!$isPdfMode)
@@ -1003,6 +827,26 @@
             </td>
             <td id="summaryCode">
                 <h3>Your Summary Code</h3>
+                @if($isPdfMode)
+                    @php($topScores = array_slice($scores, 0, 3))
+                    <table class="pdf-summary-code">
+                        <tr>
+                            <th colspan="3">Score</th>
+                        </tr>
+                        <tr>
+                            @foreach($topScores as $score)
+                                <td class="pdf-code-cell">
+                                    <span class="pdf-code-box">{{ mb_substr($score->name, 0, 1) }}</span>
+                                </td>
+                            @endforeach
+                        </tr>
+                        <tr>
+                            @foreach($topScores as $score)
+                                <td class="pdf-code-cell"><strong>{{ $score->value }}</strong></td>
+                            @endforeach
+                        </tr>
+                    </table>
+                @else
                 <div class="d-flex">
                     <div><p>Score</p></div>
                     @foreach ($scores as $score)
@@ -1012,6 +856,7 @@
                         @endif
                     @endforeach
                 </div>
+                @endif
             </td>
         </tr>
 
@@ -1154,14 +999,37 @@
                             <tr>
                                 <td colspan="2">
                                     <div>
-                                        <h4 style="text-transform: uppercase;width: 100%;display: flex">{{$key}} OCCUPATIONS</h4>
-                                        <ul class="occu-list">
-                                            @foreach($val as $k => $item)
-                                                @if($key == $item->personalitytype)
-                                                    <li>{{$item->occupationen}}</li>
-                                                @endif
-                                            @endforeach
-                                        </ul>
+                                        <h4 style="text-transform: uppercase;width: 100%;display: block;">{{$key}} OCCUPATIONS</h4>
+                                        @if($isPdfMode)
+                                            @php($filtered = $val->where('personalitytype', $key)->values())
+                                            @php($half = (int) ceil($filtered->count() / 2))
+                                            @php($left = $filtered->slice(0, $half)->values())
+                                            @php($right = $filtered->slice($half)->values())
+                                            <table class="pdf-occu-grid">
+                                                @for($i = 0; $i < $half; $i++)
+                                                    <tr>
+                                                        <td>
+                                                            @if($left->get($i))
+                                                                <span class="pdf-occu-bullet">&bull; {{ $left->get($i)->occupationen }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if($right->get($i))
+                                                                <span class="pdf-occu-bullet">&bull; {{ $right->get($i)->occupationen }}</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endfor
+                                            </table>
+                                        @else
+                                            <ul class="occu-list">
+                                                @foreach($val as $k => $item)
+                                                    @if($key == $item->personalitytype)
+                                                        <li>{{$item->occupationen}}</li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
