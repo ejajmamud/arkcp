@@ -264,7 +264,7 @@ class TestController extends Controller
             // Use DomPDF fallback directly for consistent output.
 
             PDF::setOptions([
-                'dpi' => 150,
+                'dpi' => 300,
                 'defaultFont' => 'Helvetica',
                 'isPhpEnabled' => true,
                 'defaultPaperSize' => "a4",
@@ -277,6 +277,10 @@ class TestController extends Controller
                 'tempDir' => storage_path('temp'),
                 'fontDir' => storage_path('fonts'),
                 'fontCache' => storage_path('fonts'),
+                'margin_left' => 5,
+                'margin_right' => 5,
+                'margin_top' => 5,
+                'margin_bottom' => 5,
             ]);
 
             $pdf = PDF::loadView('testsuccess.index', [

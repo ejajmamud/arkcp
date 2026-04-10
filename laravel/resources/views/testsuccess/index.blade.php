@@ -48,7 +48,7 @@
     <style>
         @page {
             size: A4;
-            margin: 10mm 10mm 10mm 10mm;
+            margin: 15mm 15mm 15mm 15mm;
         }
 
         * {
@@ -67,127 +67,121 @@
                 display: none !important;
             }
 
-            .invoice-box {
-                box-shadow: none !important;
-                border: none !important;
+            html, body {
                 margin: 0 !important;
                 padding: 0 !important;
                 width: 100% !important;
-                max-width: 100% !important;
-                box-sizing: border-box !important;
-                font-size: 14px !important;
-                overflow: visible !important;
-            }
-
-            html,
-            body {
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100% !important;
-            }
-
-            body {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
                 background: white !important;
             }
 
+            body {
+                font-family: Calibri, Arial, sans-serif !important;
+                font-size: 14px !important;
+                line-height: 1.4 !important;
+                color: #333 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .invoice-box {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                box-shadow: none !important;
+                box-sizing: border-box !important;
+            }
+
+            /* MAIN TABLES */
             .invoice-box table {
                 width: 100% !important;
                 border-collapse: collapse !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
                 table-layout: auto !important;
             }
 
-            .invoice-box table td,
-            .invoice-box table th {
+            .invoice-box table td {
+                vertical-align: top !important;
+                padding: 5px 3px !important;
+                margin: 0 !important;
                 box-sizing: border-box !important;
                 word-wrap: break-word !important;
                 overflow-wrap: break-word !important;
-                padding: 4px 3px !important;
-                overflow: visible !important;
+                word-break: break-word !important;
             }
 
-            .invoice-box table tr {
+            /* TOP SECTION - Logo and title */
+            tr.top {
+                page-break-inside: avoid !important;
+                border: none !important;
+            }
+
+            tr.top table {
+                width: 100% !important;
+            }
+
+            tr.top table td {
+                padding: 5px !important;
+                text-align: left !important;
+            }
+
+            tr.top table td.title {
+                font-size: 16px !important;
+                font-weight: bold !important;
+                text-align: left !important;
+                padding: 5px 0 !important;
+            }
+
+            tr.top img {
+                max-width: 150px !important;
+                height: auto !important;
+                display: block !important;
+            }
+
+            /* INFORMATION SECTION */
+            tr.information {
                 page-break-inside: avoid !important;
             }
 
-            .invoice-box h1,
-            .invoice-box h2,
-            .invoice-box h3,
-            .invoice-box h4,
-            .invoice-box h5 {
-                page-break-after: avoid !important;
-                margin: 6px 0 3px 0 !important;
-                padding: 0 !important;
+            tr.information table {
+                width: 100% !important;
             }
 
-            .invoice-box h4 {
-                font-size: 13px !important;
+            tr.information td {
+                padding: 3px !important;
+            }
+
+            tr.information table td {
+                padding: 5px !important;
+            }
+
+            /* HEADINGS */
+            h1, h2, h3, h4, h5 {
+                color: #2d71a1 !important;
+                margin: 8px 0 4px 0 !important;
+                padding: 0 !important;
+                line-height: 1.3 !important;
+                page-break-after: avoid !important;
                 font-weight: bold !important;
             }
 
-            .invoice-box p {
-                margin: 3px 0 !important;
-                line-height: 1.35 !important;
+            h1 { font-size: 18px !important; margin: 10px 0 6px 0 !important; }
+            h2 { font-size: 16px !important; margin: 8px 0 4px 0 !important; }
+            h3 { font-size: 14px !important; margin: 8px 0 3px 0 !important; }
+            h4 { font-size: 13px !important; margin: 6px 0 3px 0 !important; }
+
+            /* PARAGRAPHS */
+            p {
+                margin: 4px 0 !important;
+                padding: 0 !important;
+                line-height: 1.4 !important;
                 font-size: 13px !important;
-                padding: 0 !important;
             }
 
-            .hex-img {
-                text-align: center !important;
-                page-break-inside: avoid !important;
-                margin: 5px 0 !important;
-                padding: 0 !important;
-            }
-
-            .hex-img img {
-                max-width: 100% !important;
-                width: auto !important;
-                height: auto !important;
-                max-height: 150px !important;
-            }
-
-            .invoice-box img {
-                max-width: 100% !important;
-                width: auto !important;
-                height: auto !important;
-            }
-
-            .ps-info {
-                page-break-inside: avoid !important;
-                margin: 3px 0 !important;
-                padding: 0 !important;
-            }
-
-            ul.occu-list {
-                margin: 0 !important;
-                padding: 0 0 0 16px !important;
-                display: block !important;
-                width: 100% !important;
-                list-style: none !important;
-            }
-
-            ul.occu-list li {
-                float: left !important;
-                width: 45% !important;
-                margin: 0 3% 1px 0 !important;
-                padding: 1px 2px !important;
-                font-size: 12px !important;
-                page-break-inside: avoid !important;
-                list-style-position: inside !important;
-                list-style-type: circle !important;
-                box-sizing: border-box !important;
-                line-height: 1.3 !important;
-                overflow: visible !important;
-            }
-
-            .ps-info h4,
-            div h4 {
-                page-break-after: avoid !important;
-                margin-bottom: 1px !important;
-                padding: 0 !important;
-            }
-
+            /* USER DETAILS HEADER */
             .user-details-rw {
                 background: #0B617E !important;
                 color: white !important;
@@ -195,44 +189,223 @@
             }
 
             .user-details-rw td {
+                background: #0B617E !important;
                 color: white !important;
+                padding: 6px 4px !important;
+                font-size: 13px !important;
             }
 
-            .user-details-rw b {
+            .user-details-rw b,
+            .user-details-rw strong {
                 color: white !important;
+                font-weight: bold !important;
             }
 
+            /* USER DETAILS TABLE */
+            table.user-details {
+                width: 100% !important;
+                font-size: 13px !important;
+                margin: 0 !important;
+            }
+
+            table.user-details tr {
+                page-break-inside: avoid !important;
+                border-bottom: none !important;
+            }
+
+            table.user-details td {
+                padding: 4px 3px !important;
+                border: none !important;
+                text-align: left !important;
+            }
+
+            table.user-details td:first-child {
+                font-weight: 600 !important;
+                width: 30% !important;
+                padding-right: 5px !important;
+            }
+
+            /* CHART SECTION */
+            .chart-wrap {
+                margin: 8px 0 !important;
+                page-break-inside: avoid !important;
+            }
+
+            .chart-wrap .row {
+                position: relative !important;
+                height: 24px !important;
+                margin: 4px 0 !important;
+                padding: 0 !important;
+            }
+
+            .chart-wrap .label {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 120px !important;
+                padding-right: 5px !important;
+                font-size: 11px !important;
+                text-align: right !important;
+                font-weight: bold !important;
+                text-transform: uppercase !important;
+                line-height: 24px !important;
+                z-index: 10 !important;
+                color: #0B617E !important;
+            }
+
+            .chart-wrap .bar-wrap {
+                position: relative !important;
+                background: #e8f4f8 !important;
+                width: calc(100% - 130px) !important;
+                height: 100% !important;
+                margin-left: 125px !important;
+                overflow: hidden !important;
+                border: 1px solid #ccc !important;
+            }
+
+            .chart-wrap .bar {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                height: 100% !important;
+                background: #0B617E !important;
+                width: 50% !important;
+            }
+
+            .chart-wrap .number {
+                position: absolute !important;
+                top: 0 !important;
+                right: 0 !important;
+                width: 30px !important;
+                padding: 0 5px !important;
+                font-size: 12px !important;
+                font-weight: bold !important;
+                text-align: right !important;
+                line-height: 24px !important;
+                z-index: 11 !important;
+                background: rgba(255,255,255,0.9) !important;
+            }
+
+            /* SUMMARY CODE */
+            #summaryCode {
+                page-break-inside: avoid !important;
+                padding: 5px !important;
+            }
+
+            #summaryCode .d-flex {
+                display: flex !important;
+                align-items: flex-end !important;
+                gap: 3px !important;
+                margin-top: 5px !important;
+            }
+
+            #summaryCode .d-flex div {
+                flex: 1 !important;
+                text-align: center !important;
+            }
+
+            #summaryCode .d-flex h2 {
+                background: #B6E2EA !important;
+                width: 28px !important;
+                height: 28px !important;
+                line-height: 1.2 !important;
+                text-align: center !important;
+                font-size: 18px !important;
+                padding: 2px !important;
+                margin: 0 !important;
+                border-radius: 2px !important;
+            }
+
+            #summaryCode .d-flex p {
+                font-size: 11px !important;
+                margin: 2px 0 0 0 !important;
+                padding: 0 !important;
+            }
+
+            /* HEX IMAGE */
+            .hex-img {
+                text-align: center !important;
+                page-break-inside: avoid !important;
+                margin: 8px 0 !important;
+                padding: 0 !important;
+            }
+
+            .hex-img img {
+                max-width: 100% !important;
+                width: auto !important;
+                height: auto !important;
+                max-height: 140px !important;
+                display: block !important;
+                margin: 0 auto !important;
+            }
+
+            /* PERSONALITY INFO */
+            .ps-info {
+                page-break-inside: avoid !important;
+                margin: 6px 0 !important;
+                padding: 4px 0 !important;
+                border-bottom: 1px solid #eee !important;
+            }
+
+            .ps-info h4 {
+                font-size: 12px !important;
+                margin: 4px 0 2px 0 !important;
+                padding: 0 !important;
+                font-weight: bold !important;
+                color: #2d71a1 !important;
+                text-transform: uppercase !important;
+            }
+
+            .ps-info p {
+                font-size: 12px !important;
+                margin: 2px 0 !important;
+                padding: 0 !important;
+                line-height: 1.35 !important;
+            }
+
+            /* OCCUPATION LIST */
+            ul.occu-list {
+                margin: 0 !important;
+                padding: 0 !important;
+                display: block !important;
+                width: 100% !important;
+                list-style: none !important;
+                page-break-inside: avoid !important;
+            }
+
+            ul.occu-list li {
+                display: inline-block !important;
+                width: calc(50% - 2px) !important;
+                margin: 0 1% 2px 0 !important;
+                padding: 2px 3px !important;
+                font-size: 12px !important;
+                line-height: 1.3 !important;
+                list-style: circle !important;
+                list-style-position: inside !important;
+                box-sizing: border-box !important;
+                page-break-inside: avoid !important;
+                vertical-align: top !important;
+            }
+
+            /* THEME COLOR */
             .theme-color {
                 color: #2d71a1 !important;
                 font-weight: bold !important;
             }
 
-            .bar-wrap {
-                background: #b6e2ea !important;
+            /* LINKS */
+            a {
+                color: #2d71a1 !important;
+                text-decoration: underline !important;
             }
 
-            .bar {
-                background: #0B617E !important;
+            /* UTILITY CLASSES */
+            .capitalize {
+                text-transform: capitalize !important;
             }
 
-            tr.top,
-            tr.information {
-                page-break-inside: avoid !important;
-            }
-
-            table.user-details {
-                width: 100% !important;
-            }
-
-            .information {
-                page-break-inside: avoid !important;
-            }
-
-            /* Remove any fixed widths that cause overflow */
-            .invoice-box .row {
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100% !important;
+            .text-justify {
+                text-align: justify !important;
             }
         }
 
